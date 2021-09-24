@@ -19,7 +19,7 @@ from yarl import URL
 from discord.ext import commands
 
 client = discord.Client()
-token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.DPknE6OKZwjN4OTfjjSAc2fsUlk"
+token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.hEeRaJapSDeFYylXrSCwf9zrQQ0"
 
 bot = commands.Bot(command_prefix="info: ")
 bot.sniped_messages ={}
