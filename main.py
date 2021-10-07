@@ -147,7 +147,7 @@ async def on_message(message):
            Button(style=ButtonStyle.URL , label="Discord extreme list" , url =  "https://discordextremelist.xyz/en-US/bots/888985968554688512")
            ]])  
     if(message.content.startswith("info: privacy")):
-        await message.reply("```We dont store any user information and log only the guilds joined and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !!```")
+        await message.reply("```We dont store any user information and log only the guilds joined and commands used by the user and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !! \n\n➤ why we need the data and how we use it \nwe use it to improve user experience and know how the bot is doing with the users \n\n➤ who do we share the data \nwe dont share it to anyone and it is limited to our servers and local copies \n\n➤ how to contact or request to delete your data \nvisit https://ritthedev.itch.io/ and there are various ways listed over there to contact us if we didnt respond any where then , mail us at ritthedevcontact@gmail.com or join our support server and in the #support channel ask @developmentteam to delete your data we will do it within 24 hrs \n\nThank you !```")
 
     if(message.content.startswith("info: how to get it")):
         embed = discord.Embed()  
