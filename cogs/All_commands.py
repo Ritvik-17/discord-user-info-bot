@@ -41,9 +41,9 @@ class All_commands(commands.Cog):
         embed = discord.Embed()   
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)                 
         embed.title= "Information help"
-        embed.description = "**• Type `info: theid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild id` ,`how to get id` , `support`" , inline= False)
-        embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `site list` , `server count` , `privacy policy` , `report bug`" , inline= False)
+        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`" , inline= False)
+        embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `nitro users`, `site list` , `server count` , `privacy policy` , `report bug`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )

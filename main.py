@@ -2,6 +2,7 @@ import re
 import discord 
 import os
 from discord import guild
+from discord import user
 from discord.ext.commands.core import command
 from discord.flags import Intents
 from discord_slash import SlashCommand , SlashContext
@@ -15,25 +16,27 @@ from discord.ext import commands
 
 
 intents = discord.Intents().all()
-client = commands.Bot(command_prefix='info: ',  intents=intents )
+client = commands.Bot(command_prefix='info: ',  intents=intents.all())
 token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.hEeRaJapSDeFYylXrSCwf9zrQQ0"
 native_client = discord.Client()
 
 #cleaning
 client.remove_command("help")
+limit_count = 0
 
 @client.event
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
     await client.change_presence(status=discord.Status.online , activity= discord.Game('info: help'))
 
+ 
 @client.event
 async def on_guild_join(guild):  
     for channel in guild.channels:        
         try:           
-            await channel.send("Hi i'm discord user info bot thanks for adding  me !! \nType `info: help` for a list for a list of commands and type info: example to view an example of how to use me.\n\nenjoy using the bot :))")
+            await channel.send("Hi i'm discord user info bot thanks for adding  me !! \nType `info: help` for a list for a list of commands and type info: example to view an example of how to use me.\n\nenjoy using the bot :)")
             #link = await channel.create_invite(max_age = 0 , max_uses =  0)
-            print("joined server {guildid} named {guildname} whos invite is {link}".format(guildid = guild.id , guildname = guild.names))
+            print("joined server {guildid} named {guildname}".format(guildid = guild.id , guildname = guild.name ))
             break
         except:
           continue
@@ -43,8 +46,8 @@ async def on_guild_remove(guild):
        print("left {guildid} named {guildname}".format(guildid =guild.id , guildname =  guild.name))
        for channel in guild.channels:        
         try:                        
-            link = await channel.create_invite(max_age = 0 , max_uses =  0)
-            print("left server {guildid} named {guildname} whos's invite is {invite}".format(guildid = guild.id , guildname = guild.name , invite = link))
+            #link = await channel.create_invite(max_age = 0 , max_uses =  0)
+            print("left server {guildid} named {guildname} ".format(guildid = guild.id , guildname = guild.name ))
             break
         except:            
             continue
@@ -122,26 +125,54 @@ async def on_message(message):
       
         g_id = int(message.content[6:None])
         guild_new = await client.fetch_guild(g_id)
-        membercount = "we are woking on this feature"
         guild_desciption = guild_new.description
         guild_made_at = guild_new.created_at
+        owner = guild_new.owner_id      
+        boost_tier = guild_new.premium_tier        
+        member_count = client.get_guild(g_id).member_count
+        subscribers = len(client.get_guild(g_id).premium_subscribers)
+        #for member in client.get_guild(g_id):
+          #member_count += 1
+        security_level= "none"
+        security_level_num = guild_new.mfa_level
+        security_levels = ["low" , "medium" , "high" , "highest"]      
+        security_level = security_levels[security_level_num]
 
         embed = discord.Embed() 
         embed.title =  "__Guild information__"
         embed.set_thumbnail(url=guild_new.icon_url)
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** {desc} \n **`member count -`** {mem_count} , \n **`created at -`** {created_at}".format(name = guild_new , desc = guild_desciption , mem_count = membercount , created_at = guild_made_at)
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`member count -`** {mem_count} \n **`created at -`** {created_at} \n**`owner id -`** {owner} \n**`boosters count -`** {boosters} \n**`security level -`** {sec_level} \n**`Boosters -`** {subs}".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers)
+        #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
         embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
         #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: how to guild id` to know how to get a users or guilds id")
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await message.reply(embed = embed)
+        
        except Exception as err:
-           await message.replay("⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code {error_code} ⚠".format(error_code = err))
+           await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ ```".format(error_code = err))
 
    
    
     if (message.content.startswith("info: ping")):
          await message.reply(f'latency ping is {round (client.latency * 1000)} ms')
+    
+    if (message.content.startswith("info: nitro users")):
+         
+        
+         guild_id = message.guild.id
+         if(len(client.get_guild(guild_id).members) > 1000):
+          print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 1000 members```")
+          return
+         guild_new_members = client.get_guild(guild_id).members              
+         nitro_users = [] 
+         for member in guild_new_members:
+          if(str(member.avatar_url).__contains__(".gif")):
+            nitro_users.append(member.mention)         
+         if(nitro_users == []):
+           await message.reply("We found no users with nitro in this guild ,if you feel this is an error please type `info: report bug` to report this issue !")        
+         else: 
+          await message.reply(nitro_users)         
    
     if(message.content.startswith("info: server count")):
         if(message.author.id == 764736831643975693):
@@ -157,8 +188,8 @@ async def on_message(message):
          embed2.set_footer(text= "requested by {clientname}#{clientdiscriminator}".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
          embed2.color = discord.Color.green()
          await message.channel.send(embed=embed2 , components = [[
-           Button(style=ButtonStyle.URL , label="Top.gg" , url =  "https://top.gg/bot/846634813322166302/vote") ,
-           Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/dank-tax-calculator/upvote") ,           
+           Button(style=ButtonStyle.URL , label="Top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
+           Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/discord-user-info-bot") ,           
            ]]) 
 
     if(message.content.startswith("info: site list")):   
@@ -168,13 +199,13 @@ async def on_message(message):
          embed2.set_footer(text= "requested by {clientname}#{clientdiscriminator}".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
          embed2.color = discord.Color.from_rgb( 117, 255, 255 )
          await message.reply(embed=embed2 , components = [[
-           Button(style=ButtonStyle.URL , label="top.gg" , url =  "https://top.gg/bot/846634813322166302") ,
+           Button(style=ButtonStyle.URL , label="top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
            Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/discord-user-info-bot") ,
            #Button(style=ButtonStyle.URL , label="Infinity bot list" , url =  "Currently not available") 
            #Button(style=ButtonStyle.URL , label="Discord bots.gg" , url =  "Currently not available") ,
            Button(style=ButtonStyle.URL , label="Discord extreme list" , url =  "https://discordextremelist.xyz/en-US/bots/888985968554688512")
            ]])  
-    if(message.content.startswith("info: privacy")):
+    if(message.content.startswith("info: privacy policy")):
         await message.reply("```We dont store any user information and log only the guilds joined and commands used by the user and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !! \n\n➤ why we need the data and how we use it \nwe use it to improve user experience and know how the bot is doing with the users \n\n➤ who do we share the data \nwe dont share it to anyone and it is limited to our servers and local copies \n\n➤ how to contact or request to delete your data \nvisit https://ritthedev.itch.io/ and there are various ways listed over there to contact us if we didnt respond any where then , mail us at ritthedevcontact@gmail.com or join our support server and in the #support channel ask @developmentteam to delete your data we will do it within 24 hrs \n\nThank you !```")
 
     if(message.content.startswith("info: how to get id")):
