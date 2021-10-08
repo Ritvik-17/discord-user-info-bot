@@ -33,7 +33,7 @@ async def on_guild_join(guild):
         try:           
             await channel.send("Hi i'm discord user info bot thanks for adding  me !! \nType `info: help` for a list for a list of commands and type info: example to view an example of how to use me.\n\nenjoy using the bot :))")
             #link = await channel.create_invite(max_age = 0 , max_uses =  0)
-            #print("joined server {guildid} named {guildname} whos invite is {link}".format(guildid = guild.id , guildname = guild.name , link = link))
+            print("joined server {guildid} named {guildname} whos invite is {link}".format(guildid = guild.id , guildname = guild.names))
             break
         except:
           continue
@@ -54,6 +54,7 @@ async def on_guild_remove(guild):
 async def on_message(message):
  
  if(message.content.startswith("info:")): 
+    print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
     used_guild_command = False
     if message.author == client.user:
         return    
@@ -72,12 +73,6 @@ async def on_message(message):
         used_main_command = False
     
  
-
-
-   
-
- 
-  
     if message.content.startswith("info:") :
       if(used_main_command == True and used_guild_command == False):
         try:
