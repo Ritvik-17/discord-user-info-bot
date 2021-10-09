@@ -25,7 +25,7 @@ slash = SlashCommand(client , sync_commands= True)
 client.remove_command("help")
 limit_count = 0
 
-@slash.slash(name="help" , description="Get a list of all commands and how to use the bot" , guild_ids=[888989551027163146])
+@slash.slash(name="help" , description="Get a list of all commands and how to use the bot" , guild_ids=[888989551027163146 , 834089778215125002])
 async def help(ctx:SlashContext):
         message = ctx.message
         embed = discord.Embed()   
@@ -35,7 +35,7 @@ async def help(ctx:SlashContext):
         embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`" , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `server count` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
-        embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
+        #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await ctx.send(embed = embed)        
 
@@ -70,8 +70,8 @@ async def on_guild_remove(guild):
 
 @client.event
 async def on_message(message):
- 
- if(message.content.startswith("info:")): 
+ try:
+  if(message.content.startswith("info:")): 
     
     print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
     used_guild_command = True
@@ -82,20 +82,27 @@ async def on_message(message):
     con_mes = message.content
     
     try:
-      if(int(con_mes[5:None])): 
-                    
-          try:
-            await client.fetch_user(int(con_mes[5:None]))
-            used_guild_command = False
-          except:
-            await client.fetch_guild(int(con_mes[5:None]))                   
+      if(int(con_mes[5:None])):                   
+            used_main_command = True                           
     except:
         used_main_command = False
  
- 
+    try:    
+     try:
+      await client.fetch_user(int(con_mes[5:None]))
+      used_guild_command = False
+     except:
+      await client.fetch_guild(int(con_mes[5:None]))  
+      used_guild_command = True
+
+    except Exception as error_new:
+      print(str(error_new))
+      if( str(error_new) != "403 Forbidden (error code: 50001): Missing Access"):
+       await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+
     if message.content.startswith("info:") :
       if(used_main_command == True and used_guild_command == False):
-        #try:
+        try:
           id = int(message.content[6:None])    
           discorduser = await client.fetch_user(id)
           nitro = False
@@ -117,6 +124,9 @@ async def on_message(message):
               server_member = member
 
           if str(discorduser.avatar_url).__contains__(".gif"): nitro = True
+          
+          mobile =""
+          boosting_since = ""
 
           for mem_id in message.guild.members:
                if(mem_id.id == discorduser.id):
@@ -125,17 +135,22 @@ async def on_message(message):
           
           embed = discord.Embed() 
           embed.title =  "__User information__"
-          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`display/server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`has nitro`** - {nitro} \n**`hypesquad`** - {hypesquads[list_num]} \n**`mention`** - <@{discorduser.id}>\n**`is bot`**- {discorduser.bot} \n**`alloted color`**- {discorduser.default_avatar} \n**`server join date`** - we are working on this feature \n**`status`** - we are working on this feature \n**`Avatar url -`** {discorduser.avatar_url} \n**`in this server -`** {member_in_guild}"               
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`display/server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`has nitro`** - {nitro} \n**`hypesquad`** - {hypesquads[list_num]} \n**`mention`** - <@{discorduser.id}>\n**`is bot`**- {discorduser.bot} \n**`alloted color`**- {discorduser.default_avatar} \n**`Avatar url -`** {discorduser.avatar_url} \n**`in this server -`** {member_in_guild}"               
           embed.set_thumbnail(url=discorduser.avatar_url)
           embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)          
-          if(member_in_guild == True):
-           embed.add_field(name="__In guild information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = server_member.is_on_mobile() , boosting_since = server_member.premium_since , top_role = server_member.top_role) , inline= False)
-          #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: how to guild id` to know how to get a users or guilds id")
-          embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
+          if(member_in_guild == True):                     
+           if(server_member.is_on_mobile()): mobile = "yes" 
+           else: mobile = "Not using mobile currently"
+           if(server_member.premium_since == None): boosting_since = "Not boosting this server"
+           else: boosting_since = server_member.premium_since
+           embed.add_field(name="__In guild information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
+          #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
+          #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await message.reply(embed = embed)
-        #except:
-          #await message.reply(":warning: An error has occured retry or please contact support server if the error continues and make sure you have entered the syntax right :warning:" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+        except Exception as err:
+          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+          print(err)
      
       if(used_main_command == True and used_guild_command == True):
        try:
@@ -161,7 +176,7 @@ async def on_message(message):
         embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`member count -`** {mem_count} \n **`created at -`** {created_at} \n**`owner id -`** {owner} \n**`boost level -`** {boosters} \n**`security level -`** {sec_level} \n**`Boosters -`** {subs}".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers)
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
-        embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
+        #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
         #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: how to guild id` to know how to get a users or guilds id")
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await message.reply(embed = embed)
@@ -169,7 +184,18 @@ async def on_message(message):
        except Exception as err:
            await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ ```".format(error_code = err))
 
-   
+    '''if(message.content.startswith("info: help")):
+        
+        embed = discord.Embed()   
+        embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)                 
+        embed.title= "Information help"
+        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`" , inline= False)
+        embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `server count` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
+        embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
+        #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
+        embed.color = discord.Color.from_rgb( 117, 255, 255 )
+        await message.reply(embed = embed) '''  
    
     if (message.content.startswith("info: ping")):
          await message.reply(f'latency ping is {round (client.latency * 1000)} ms')
@@ -254,15 +280,25 @@ async def on_message(message):
           embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
           embed.add_field(name="__User id__" ,value="type `info: how to get id` to get someones discord id and type `info: (paste the id here)` to get a users information" , inline= False) 
           embed.add_field(name="__Server id__" ,value="using similar process after turning on developer mode right click on the server icon and click copy id and type `info: (paste the id here)` to get a servers information note:- due to discord API policies we can retrive information from the servers if the bot is in that server" , inline= False) 
+          embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await message.reply(embed = embed ,components = [
             [Button(style= ButtonStyle.URL , label="user example" , url ="https://cdn.discordapp.com/attachments/890895848773419038/896286726010568724/unknown.png"),
             Button(style= ButtonStyle.URL , label="server example" , url ="https://cdn.discordapp.com/attachments/890895848773419038/896286468887167026/unknown.png"),
             Button(style= ButtonStyle.URL , label="Support server" , url ="https://discord.gg/RW2J349bdu")
             ]])
     if(message.content.startswith("info: who made you")):
-     await message.reply("**RitTheDeV#0519** made me and {author_name} you are most welcomed join our community server :)".format(author_name = message.author.name) , components = [[ Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu" ), Button(style=ButtonStyle.URL, label="Join Sub-reddit", url="https://www.reddit.com/r/ritthedev_community/" ), Button(style=ButtonStyle.URL, label="View our projects", url="https://ritthedev.itch.io")]])  
-     
-    await client.process_commands(message)
+     if(message.author.id == 764736831643975693):
+       message.reply("you made me and your asking me who made you how dumb lol")
+     else:
+      await message.reply("**RitTheDeV#0519** made me and {author_name} you are most welcomed join our community server :)".format(author_name = message.author.name) , components = [[ Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu" ), Button(style=ButtonStyle.URL, label="Join Sub-reddit", url="https://www.reddit.com/r/ritthedev_community/" ), Button(style=ButtonStyle.URL, label="View our projects", url="https://ritthedev.itch.io")]])  
+ except Exception as err:
+   try:
+     print(int(con_mes[5:None]))
+   except:
+    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    print(err)
+
+ await client.process_commands(message)
 
 
 

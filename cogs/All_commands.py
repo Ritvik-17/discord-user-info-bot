@@ -42,27 +42,27 @@ class All_commands(commands.Cog):
         #embed.color = discord.Color.purple()
         #await ctx.reply(embed = embed)
         await ctx.send("testing")'''
-    
+  print("command used or there is an error with {err}".format(err = error))
 
 
  @commands.command()
  async def help(self,ctx):
         message = ctx.message
         embed = discord.Embed()   
-        #embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)                 
+        embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)                 
         embed.title= "Information help"
         embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
         embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`" , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `server count` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
-        embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
+        #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await message.reply(embed = embed)       
   
  @commands.command()
  async def example(self,ctx):
         embed = discord.Embed()
-        embed.set_image(url="https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png")
         embed.color = discord.Color.purple()
         await ctx.reply(embed = embed)
                   
@@ -75,7 +75,7 @@ class All_commands(commands.Cog):
  @commands.command()
  async def support(self,ctx):     
     await ctx.reply("if there are any issues with the bot \n \n`possible fixes -` \n➤ make sure you entered the command's syntax right. \n➤ try info: help or info: example. \n➤ make sure you gave the bot permissions to embed,message and etc. \n➤ join the support server and in the #support ask for help or report this and we will help you within 24hrs of time. \n➤ if nothing works contact us at ritthedevcontact@gmail.com ." , components = [
-           [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") ,  Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]
+           [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") ,  Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png")]
            ]) 
  @commands.command()
  async def updates(self,ctx):     
