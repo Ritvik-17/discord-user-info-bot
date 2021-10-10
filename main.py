@@ -245,9 +245,10 @@ async def on_message(message):
          await message.reply(embed=embed2 , components = [[
            Button(style=ButtonStyle.URL , label="top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
            Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/discord-user-info-bot") ,
-           #Button(style=ButtonStyle.URL , label="Infinity bot list" , url =  "Currently not available") 
-           #Button(style=ButtonStyle.URL , label="Discord bots.gg" , url =  "Currently not available") ,
-           Button(style=ButtonStyle.URL , label="Discord extreme list" , url =  "https://discordextremelist.xyz/en-US/bots/888985968554688512")
+           Button(style=ButtonStyle.URL , label="Infinity bot list" , url =  "https://infinitybotlist.com/bots/888985968554688512/")] ,[
+           Button(style=ButtonStyle.URL , label="Discord bots.gg" , url =  "https://discord.bots.gg/bots/888985968554688512") ,           
+           Button(style=ButtonStyle.URL , label="Discord extreme list" , url =  "https://discordextremelist.xyz/en-US/bots/888985968554688512"),
+           Button(style=ButtonStyle.URL , label="Our website" , url =  "https://discord-user-info-bot.glitch.me/")
            ]])  
     if(message.content.startswith("info: privacy policy")):
         await message.reply("```We dont store any user information and log only the guilds joined and commands used by the user and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !! \n\n➤ why we need the data and how we use it \nwe use it to improve user experience and know how the bot is doing with the users \n\n➤ who do we share the data \nwe dont share it to anyone and it is limited to our servers and local copies \n\n➤ how to contact or request to delete your data \nvisit https://ritthedev.itch.io/ and there are various ways listed over there to contact us if we didnt respond any where then , mail us at ritthedevcontact@gmail.com or join our support server and in the #support channel ask @developmentteam to delete your data we will do it within 24 hrs \n\nThank you !```")
