@@ -290,7 +290,7 @@ async def on_message(message):
             ]])
     if(message.content.startswith("info: who made you")):
      if(message.author.id == 764736831643975693):
-       message.reply("you made me and your asking me who made you how dumb lol")
+       await message.reply("you made me and  asking me who made you how dumb lol")
      else:
       await message.reply("**RitTheDeV#0519** made me and {author_name} you are most welcomed join our community server :)".format(author_name = message.author.name) , components = [[ Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu" ), Button(style=ButtonStyle.URL, label="Join Sub-reddit", url="https://www.reddit.com/r/ritthedev_community/" ), Button(style=ButtonStyle.URL, label="View our projects", url="https://ritthedev.itch.io")]])  
  except Exception as err:
