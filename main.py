@@ -37,11 +37,7 @@ async def help(ctx:SlashContext):
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
-        await message.reply(embed = embed , components = 
-        [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") , 
-         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"),
-         Button(style=ButtonStyle.URL, label="Website", url="https://discord-user-info-bot.glitch.me/")
-         ]])  
+        await message.reply(embed = embed)  
         print("used slash command")     
         
 
