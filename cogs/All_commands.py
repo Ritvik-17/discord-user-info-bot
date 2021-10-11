@@ -28,21 +28,21 @@ class All_commands(commands.Cog):
  async def on_ready(self):
      print("On ready: bot is online cog listener")
 
- @commands.Cog.listener()
+ '''@commands.Cog.listener()
  async def on_command_error(self, ctx, error):
-  '''        if(message == "info: ping"):
+          if(message == "info: ping"):
             return
         print(message)
         await ctx.send("``` An error has occured retry or please contact support server if the error continues and make sure you have entered the syntax right ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]]) '''
 
-  '''@cog_ext.cog_slash(name="how to get id" , description="Will explain how to get someones discord id to use this bot" , guild_ids=[888989551027163146])
+ '''cog_ext.cog_slash(name="how to get id" , description="Will explain how to get someones discord id to use this bot" , guild_ids=[888989551027163146])
  async def how_to_get_id(self , ctx):
         #embed = discord.Embed()  
         #embed.set_image(url="https://cdn.discordapp.com/attachments/890895848773419038/890899791574347786/bn.png")
         #embed.color = discord.Color.purple()
         #await ctx.reply(embed = embed)
         await ctx.send("testing")'''
-  print("command used or there is an error with {err}".format(err = error))
+  #print("command used or there is an error with {err}".format(err = error))'''
 
 
  @commands.command()
@@ -57,7 +57,11 @@ class All_commands(commands.Cog):
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
-        await message.reply(embed = embed)       
+        await message.reply(embed = embed , components = 
+        [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") , 
+         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"),
+         Button(style=ButtonStyle.URL, label="Website", url="https://discord-user-info-bot.glitch.me/")
+         ]])       
   
  @commands.command()
  async def example(self,ctx):
