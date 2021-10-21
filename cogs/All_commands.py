@@ -60,7 +60,7 @@ class All_commands(commands.Cog):
         await message.reply(embed = embed, components = 
         [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") , 
          Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"),
-         Button(style=ButtonStyle.URL, label="Website", url="https://discord-user-info-bot.glitch.me/")
+         Button(style=ButtonStyle.URL, label="Vote for us", url="https://top.gg/bot/888985968554688512/vote")
          ]])       
   
  @commands.command()
