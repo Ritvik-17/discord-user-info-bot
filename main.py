@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import discord 
 import os
 from discord import guild
@@ -101,7 +102,8 @@ async def on_message(message):
       #print(str(error_new))
       if( str(error_new) != "403 Forbidden (error code: 50001): Missing Access" or str(error_new)[0:10] == "invalid literal for int() with base 10: ' help'"):
        #await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
-       print(error_new)
+       pass
+
 
     if message.content.startswith("info:") :
       if(used_main_command == True and used_guild_command == False):
@@ -153,7 +155,7 @@ async def on_message(message):
           await message.reply(embed = embed)
         except Exception as err:
           await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
-          print(err)
+          pass
      
       if(used_main_command == True and used_guild_command == True):
        try:
@@ -300,7 +302,7 @@ async def on_message(message):
      print(int(con_mes[5:None]))
    except:
     await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
-    print(err)
+    pass
 
  await client.process_commands(message)
 

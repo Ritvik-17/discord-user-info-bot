@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import discord 
 import os
 from discord.ext.commands import bot, errors
@@ -42,7 +43,8 @@ class All_commands(commands.Cog):
         #embed.color = discord.Color.purple()
         #await ctx.reply(embed = embed)
         await ctx.send("testing")'''
-   print("command used or there is an error with {err}".format(err = error))
+   #print("command used or there is an error with {err}".format(err = error))
+   pass
 
 
  @commands.command()
@@ -84,6 +86,11 @@ class All_commands(commands.Cog):
  @commands.command()
  async def updates(self,ctx):     
     await ctx.reply("```md\nDiscord user info bot v2.0 (Global release)\n\n#New \n- how to get id improved along with its command syntax\n- bot is rewritten with discord.ext frame work and cogs\n- added help slash command\n- added support command\n- added who made you command\n- added vote,privacy policy,report bug,site list commands\n- added nitro users command\n- added updates command\n\n#Changes\n- snipe command removed to run the bot smoothly\n- minor changes in help command and embed components\n- added a buch of new details about a user and server\n- server count command can be accesed by anyone now\n\n#bug fixes\n- fixed errors with guild id\n- fixed bot not responding for privacy policy\n- fixed components redirecting to wrong links\n```") 
+
+ @commands.command()
+ async def id(self,ctx):  
+     await ctx.reply("```Please enter the id of the user instead of the word 'ID' type info: example for more information```") 
+
                         
 
 def setup(client):
