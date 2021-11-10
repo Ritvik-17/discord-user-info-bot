@@ -1,4 +1,3 @@
-from asyncio.windows_events import NULL
 import discord 
 import os
 from discord.ext.commands import bot, errors
