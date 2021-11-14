@@ -60,7 +60,7 @@ async def on_guild_join(guild):
 
 @client.event       
 async def on_guild_remove(guild):
-       print("left {guildid} named {guildname}".format(guildid =guild.id , guildname =  guild.name))
+       #print("left {guildid} named {guildname}".format(guildid =guild.id , guildname =  guild.name))
        for channel in guild.channels:        
         try:                        
             #link = await channel.create_invite(max_age = 0 , max_uses =  0)
