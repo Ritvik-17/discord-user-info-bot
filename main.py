@@ -309,7 +309,7 @@ async def on_message(message):
            [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu")]
            ])
 
-    if message.content.startswith("info: id help"):
+    if message.content == "info: id help":
           embed = discord.Embed()
           embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
           embed.add_field(name="__User id__" ,value="type `info: how to get id` to get someones discord id and type `info: (paste the id here)` to get a users information" , inline= False) 
