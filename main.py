@@ -2,6 +2,7 @@ import discord
 import os
 from discord import guild
 from discord import user
+from discord.ext.commands import bot
 from discord.ext.commands.core import command
 from discord.flags import Intents
 from discord_slash import SlashCommand , SlashContext
@@ -105,6 +106,7 @@ async def on_message(message):
 
 
     if message.content.startswith("info:") :
+    
       if(used_main_command == True and used_guild_command == False):
         try:
           id = int(message.content[6:None])    
@@ -135,6 +137,7 @@ async def on_message(message):
           for mem_id in message.guild.members:
                if(mem_id.id == discorduser.id):
                    member_in_guild = True
+
          
           
           embed = discord.Embed() 
@@ -153,14 +156,20 @@ async def on_message(message):
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await message.reply(embed = embed)
         except Exception as err:
-          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ \n\nConsider joining our support server if you face any difficulties- https://discord.gg/RW2J349bdu ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
           pass
      
       if(used_main_command == True and used_guild_command == True):
        try:
-      
+
         g_id = int(message.content[6:None])
         guild_new = await client.fetch_guild(g_id)
+
+        bot_count = 0
+        for bot_count_mem in client.get_guild(g_id).members:
+          if bot_count_mem.bot:
+            bot_count = bot_count + 1
+
         guild_desciption = guild_new.description
         guild_made_at = guild_new.created_at
         owner = guild_new.owner_id      
@@ -177,7 +186,7 @@ async def on_message(message):
         embed = discord.Embed() 
         embed.title =  "__Guild information__"
         embed.set_thumbnail(url=guild_new.icon_url)
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`member count -`** {mem_count} \n **`created at -`** {created_at} \n**`owner id -`** {owner} \n**`boost level -`** {boosters} \n**`security level -`** {sec_level} \n**`Boosters -`** {subs}".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers)
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`created at -`** {created_at} \n**`owner id -`** {owner} \n**`boost level -`** {boosters} \n**`security level -`** {sec_level} \n**`Boosters -`** {subs} ".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , bot_count = bot_count)
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
         #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
@@ -186,7 +195,7 @@ async def on_message(message):
         await message.reply(embed = embed)
         
        except Exception as err:
-           await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ ```".format(error_code = err))
+           await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ \n\nConsider joining our support server if you face any difficulties- https://discord.gg/RW2J349bdu```".format(error_code = err))
 
     '''if(message.content.startswith("info: help")):
         
@@ -300,7 +309,7 @@ async def on_message(message):
    try:
      print(int(con_mes[5:None]))
    except:
-    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server (https://discord.gg/RW2J349bdu) and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
     pass
 
  await client.process_commands(message)

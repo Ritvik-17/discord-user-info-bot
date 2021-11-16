@@ -90,6 +90,7 @@ class All_commands(commands.Cog):
  async def id(self,ctx):  
      await ctx.reply("```Please enter the id of the user instead of the word 'ID' the input should look something like info: 764736831643975693 & type info: example for more information```") 
 
+
                         
 
 def setup(client):
