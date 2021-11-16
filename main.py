@@ -97,6 +97,8 @@ async def on_message(message):
      except:
       await client.fetch_guild(int(con_mes[5:None]))  
       used_guild_command = True
+    
+     
 
     except Exception as error_new:
       #print(str(error_new))
@@ -104,12 +106,24 @@ async def on_message(message):
        #await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
        pass
 
+    if(message.content == "info: this"):
+      used_main_command = True
+      used_guild_command = False
+    if(message.content == "info: thisg"):
+      used_guild_command = True
+      used_main_command = True
 
     if message.content.startswith("info:") :
     
       if(used_main_command == True and used_guild_command == False):
+        
         try:
-          id = int(message.content[6:None])    
+          if message.content == "info: this":
+           id = int(message.author.id)
+          else:
+           id = int(message.content[6:None]) 
+          
+
           discorduser = await client.fetch_user(id)
           nitro = False
           member_in_guild = False       
@@ -156,13 +170,19 @@ async def on_message(message):
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await message.reply(embed = embed)
         except Exception as err:
-          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ \n\nConsider joining our support server if you face any difficulties- https://discord.gg/RW2J349bdu ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
           pass
      
       if(used_main_command == True and used_guild_command == True):
+       print("UsedGuild")
        try:
-
-        g_id = int(message.content[6:None])
+       
+        if message.content == "info: thisg":
+           g_id = int(message.guild.id)
+        else:
+           g_id = int(message.content[6:None])
+      
+        
         guild_new = await client.fetch_guild(g_id)
 
         bot_count = 0
@@ -195,7 +215,7 @@ async def on_message(message):
         await message.reply(embed = embed)
         
        except Exception as err:
-           await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ \n\nConsider joining our support server if you face any difficulties- https://discord.gg/RW2J349bdu```".format(error_code = err))
+           await message.reply("```⚠ An error has occured most probably as the bot couldnt acces the server we will fix this issue soon type info: report bug and report this issue error code: {error_code} ⚠ ```".format(error_code = err) , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])
 
     '''if(message.content.startswith("info: help")):
         
@@ -226,7 +246,7 @@ async def on_message(message):
           if(str(member.avatar_url).__contains__(".gif")):
             nitro_users.append(member.mention)         
          if(nitro_users == []):
-           await message.reply("We found no users with nitro in this guild ,if you Feel this is an error please type `info: report bug` to report this issue !")        
+           await message.reply("We found no users with nitro in this guild ,if you Feel this is an error please type `info: report bug` to report this issue !" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
          else: 
           await message.reply(nitro_users)         
    
@@ -300,6 +320,7 @@ async def on_message(message):
             Button(style= ButtonStyle.URL , label="server example" , url ="https://cdn.discordapp.com/attachments/890895848773419038/896286468887167026/unknown.png"),
             Button(style= ButtonStyle.URL , label="Support server" , url ="https://discord.gg/RW2J349bdu")
             ]])
+    
     if(message.content.startswith("info: who made you")):
      if(message.author.id == 764736831643975693):
        await message.reply("you made me and  asking me who made you how dumb lol")
@@ -309,10 +330,14 @@ async def on_message(message):
    try:
      print(int(con_mes[5:None]))
    except:
-    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server (https://discord.gg/RW2J349bdu) and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
     pass
 
  await client.process_commands(message)
+
+
+ 
+ 
 
 
 
