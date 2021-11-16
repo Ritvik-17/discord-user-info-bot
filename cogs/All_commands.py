@@ -53,7 +53,7 @@ class All_commands(commands.Cog):
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)                 
         embed.title= "Information help"
         embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`" , inline= False)
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guild-id` ,`how to get id` , `support`, `this` , `thisg`" , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `server count` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
@@ -84,7 +84,7 @@ class All_commands(commands.Cog):
            ]) 
  @commands.command()
  async def updates(self,ctx):     
-    await ctx.reply("```md\nDiscord user info bot v2.0 (Global release)\n\n#New \n- how to get id improved along with its command syntax\n- bot is rewritten with discord.ext frame work and cogs\n- added help slash command\n- added support command\n- added who made you command\n- added vote,privacy policy,report bug,site list commands\n- added nitro users command\n- added updates command\n\n#Changes\n- snipe command removed to run the bot smoothly\n- minor changes in help command and embed components\n- added a buch of new details about a user and server\n- server count command can be accesed by anyone now\n\n#bug fixes\n- fixed errors with guild id\n- fixed bot not responding for privacy policy\n- fixed components redirecting to wrong links\n```") 
+    await ctx.reply("```md\nDiscord user info bot v2.2 (Update) \n\n#New \n- info: this displays info of the user who used the command \n- info: thisg displays info of the guild who used the command \n\n#Changes \n- Added bot count in Guild information \n- Added Support server button for error messages \n\n#bug fixes \n- None```") 
 
  @commands.command()
  async def id(self,ctx):  
