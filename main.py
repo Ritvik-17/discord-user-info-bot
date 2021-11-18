@@ -278,7 +278,7 @@ async def on_message(message):
            Button(style=ButtonStyle.URL , label="top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
            Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/discord-user-info-bot") ,
            Button(style=ButtonStyle.URL , label="Infinity bot list" , url =  "https://infinitybotlist.com/bots/888985968554688512/")] ,[
-           Button(style=ButtonStyle.URL , label="Discord bots.gg" , url =  "https://discord.bots.gg/bots/888985968554688512") ,           
+           Button(style=ButtonStyle.URL , label="Fateslist.xyz" , url =  "https://fateslist.xyz/bot/888985968554688512") ,           
            Button(style=ButtonStyle.URL , label="Discord extreme list" , url =  "https://discordextremelist.xyz/en-US/bots/888985968554688512"),
            Button(style=ButtonStyle.URL , label="Our website" , url =  "https://discord-user-info-bot.glitch.me/")
            ]])  
