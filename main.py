@@ -3,6 +3,7 @@ import os
 from discord import guild
 from discord import user
 from discord.ext.commands import bot
+from discord.ext.commands.converter import clean_content
 from discord.ext.commands.core import command
 from discord.flags import Intents
 from discord_slash import SlashCommand , SlashContext
@@ -47,12 +48,23 @@ async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
     await client.change_presence(status=discord.Status.online , activity= discord.Game('info: help'))
 
+
+
+    '''
+           bot_count_new = 0  for bot_count_mem in client.get_guild(i.id).members:
+      if bot_count_mem.bot:
+        bot_count_new = bot_count_new + 1 '''
+     #print(str(i.member_count) + "," + str(bot_count_new))
+     
+    
+
+
  
 @client.event
 async def on_guild_join(guild):  
     for channel in guild.channels:        
         try:           
-            await channel.send("Hi i'm discord user info bot thanks for adding  me !! \nType `info: help` for a list for a list of commands and type info: example to view an example of how to use me.\n\nenjoy using the bot :)")
+            await channel.send("Hi i'm discord user info bot thanks for adding  me !! \n\nType `info: help` for a list for a list of commands and type `info: example` to view an example of how to use me.\n\nenjoy using the bot :)")
             #link = await channel.create_invite(max_age = 0 , max_uses =  0)
             print("joined server {guildid} named {guildname}".format(guildid = guild.id , guildname = guild.name ))
             break
@@ -85,15 +97,29 @@ async def on_message(message):
     con_mes = message.content
     
     try:
-      if(int(con_mes[5:None])):                   
-            used_main_command = True                           
+       try:
+        if message.content.index("@") == 7:
+         if(int(con_mes[9:-1])):                   
+            used_main_command = True             
+       except:
+        if(int(con_mes[5:None])):                   
+            used_main_command = True           
+                    
     except:
-        used_main_command = False
+        #print(message.content.index("@"))
+        used_main_command = False 
+      
  
-    try:    
+    try:
      try:
-      await client.fetch_user(int(con_mes[5:None]))
-      used_guild_command = False
+      try:
+        if message.content.index("@") == 7:
+         await client.fetch_user(int(con_mes[9:-1]))
+         used_guild_command = False
+      except:
+         await client.fetch_user(int(con_mes[5:None]))
+         used_guild_command = False     
+    
      except:
       await client.fetch_guild(int(con_mes[5:None]))  
       used_guild_command = True
@@ -117,11 +143,15 @@ async def on_message(message):
     
       if(used_main_command == True and used_guild_command == False):
         
-        try:
+        try:          
           if message.content == "info: this":
            id = int(message.author.id)
           else:
-           id = int(message.content[6:None]) 
+           try:
+            if message.content.index("@") == 7:
+             id = int(message.content[9:-1]) 
+           except:
+             id = int(message.content[6:None])           
           
 
           discorduser = await client.fetch_user(id)
@@ -170,11 +200,11 @@ async def on_message(message):
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await message.reply(embed = embed)
         except Exception as err:
-          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs Error Code - {err} ⚠ ```".format(err = err), components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
           pass
      
       if(used_main_command == True and used_guild_command == True):
-       print("UsedGuild")
+       #print("UsedGuild")
        try:
        
         if message.content == "info: thisg":
@@ -321,6 +351,15 @@ async def on_message(message):
             Button(style= ButtonStyle.URL , label="Support server" , url ="https://discord.gg/RW2J349bdu")
             ]])
     
+    '''if message.content.startswith("info:  ") and message.author.id == 764736831643975693:
+      to_leave = client.get_guild(int(con_mes[12:None])) 
+      print("left"+ " , " + str(to_leave.name) + " , " + str(len(client.guilds)) )
+      await to_leave.leave()
+      #print(int(con_mes[12:None])) '''
+      
+
+      #print("hello")
+
     if(message.content.startswith("info: who made you")):
      if(message.author.id == 764736831643975693):
        await message.reply("you made me and  asking me who made you how dumb lol")
