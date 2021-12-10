@@ -84,7 +84,9 @@ class All_commands(commands.Cog):
            ]) 
  @commands.command()
  async def updates(self,ctx):     
-    await ctx.reply("```md\nDiscord user info bot v2.2 (Update) \n\n#New \n- info: this displays info of the user who used the command \n- info: thisg displays info of the guild who used the command \n\n#Changes \n- Added bot count in Guild information \n- Added Support server button for error messages \n\n#bug fixes \n- None```") 
+    await ctx.reply("```md\nDiscord user info bot v2.3 (Update)\n\n#New\n- info: @mention now works!!!\n- the bot is verified now \n\n#Changes \n- None \n\n#bug fixes \n- None```" , components = [
+           [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu")]
+           ]) 
 
  @commands.command()
  async def id(self,ctx):  

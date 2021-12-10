@@ -47,7 +47,12 @@ async def help(ctx:SlashContext):
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
     await client.change_presence(status=discord.Status.online , activity= discord.Game('info: help'))
+   
+    '''for i in client.guilds:
+      print(i.owner.id)'''
 
+    '''for i in client.guilds:
+     print(i.id)'''
 
 
     '''
@@ -305,7 +310,7 @@ async def on_message(message):
          embed2.set_footer(text= "requested by {clientname}#{clientdiscriminator}".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
          embed2.color = discord.Color.from_rgb( 117, 255, 255 )
          await message.reply(embed=embed2 , components = [[
-           Button(style=ButtonStyle.URL , label="top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
+           Button(style=ButtonStyle.URL , label="Top.gg" , url =  "https://top.gg/bot/888985968554688512") ,
            Button(style=ButtonStyle.URL , label="Discord bot list" , url =  "https://discordbotlist.com/bots/discord-user-info-bot") ,
            Button(style=ButtonStyle.URL , label="Infinity bot list" , url =  "https://infinitybotlist.com/bots/888985968554688512/")] ,[
            Button(style=ButtonStyle.URL , label="Fateslist.xyz" , url =  "https://fateslist.xyz/bot/888985968554688512") ,           
@@ -351,11 +356,11 @@ async def on_message(message):
             Button(style= ButtonStyle.URL , label="Support server" , url ="https://discord.gg/RW2J349bdu")
             ]])
     
-    '''if message.content.startswith("info:  ") and message.author.id == 764736831643975693:
+    '''if message.content.startswith("info: leave") and message.author.id == 764736831643975693:
       to_leave = client.get_guild(int(con_mes[12:None])) 
       print("left"+ " , " + str(to_leave.name) + " , " + str(len(client.guilds)) )
       await to_leave.leave()
-      #print(int(con_mes[12:None])) '''
+      #print(int(con_mes[12:None]))'''
       
 
       #print("hello")
