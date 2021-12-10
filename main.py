@@ -26,8 +26,9 @@ slash = SlashCommand(client , sync_commands= True)
 #cleaning
 client.remove_command("help")
 limit_count = 0
+# , guild_ids=[888989551027163146 , 834089778215125002]
 
-@slash.slash(name="help" , description="Get a list of all commands and how to use the bot" , guild_ids=[888989551027163146 , 834089778215125002])
+@slash.slash(name="help" , description="Get a list of all commands and how to use the bot")
 async def help(ctx:SlashContext):
         message = ctx.message
         embed = discord.Embed()   
@@ -365,6 +366,9 @@ async def on_message(message):
 
       #print("hello")
 
+    if(message.content.startswith("info:help")):
+      await message.reply("it's `info: help` ,dont forget the space bud !!")
+    
     if(message.content.startswith("info: who made you")):
      if(message.author.id == 764736831643975693):
        await message.reply("you made me and  asking me who made you how dumb lol")
