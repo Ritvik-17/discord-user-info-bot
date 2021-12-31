@@ -6,7 +6,7 @@ from discord.ext.commands import bot
 from discord.ext.commands.converter import clean_content
 from discord.ext.commands.core import command
 from discord.flags import Intents
-from discord_slash import SlashCommand , SlashContext
+from discord_slash import SlashCommand , SlashContext, context
 from asyncio.tasks import wait
 from collections import UserList
 from discord_components import DiscordComponents,ButtonStyle,Button,InteractionEventType, component 
@@ -17,8 +17,9 @@ from discord.ext import commands
 from discord_slash import SlashCommand , SlashContext
 from discord_slash.utils.manage_commands import create_choice , create_option
 
-intents = discord.Intents().all()
-client = commands.Bot(command_prefix='info: ',  intents=intents.all())
+intents = discord.Intents().default()
+intents.members = True
+client = commands.Bot(command_prefix='info: ',  intents=intents)
 token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.hEeRaJapSDeFYylXrSCwf9zrQQ0"
 native_client = discord.Client()
 slash = SlashCommand(client , sync_commands= True)
@@ -135,7 +136,7 @@ async def on_message(message):
     except Exception as error_new:
       #print(str(error_new))
       if( str(error_new) != "403 Forbidden (error code: 50001): Missing Access" or str(error_new)[0:10] == "invalid literal for int() with base 10: ' help'"):
-       #await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+       #await message.reply("```⚠ a_n error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
        pass
 
     if(message.content == "info: this"):
@@ -164,7 +165,6 @@ async def on_message(message):
           nitro = False
           member_in_guild = False       
           #discorduserprofile  = await client.fetch_user_profile(id)      
-         
           #checking hypesquad
           list_num = 3
           hypesquads = ["brilliance" , "bravery" ,"balance" , "none"]
@@ -172,7 +172,6 @@ async def on_message(message):
           if(discorduser.public_flags.hypesquad_bravery == True): list_num = 1
           if(discorduser.public_flags.hypesquad_balance == True): list_num = 2
           #if(discorduser.public_flags.hypesquad == False): list_num = 3
-                
           #in the server methods          
           server_member = ""          
           for member in message.guild.members:
@@ -378,7 +377,7 @@ async def on_message(message):
    try:
      print(int(con_mes[5:None]))
    except:
-    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    await message.reply("```⚠ An or has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs (line 380)⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
     pass
 
  await client.process_commands(message)
