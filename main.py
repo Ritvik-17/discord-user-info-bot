@@ -88,13 +88,12 @@ async def on_guild_join(guild):
         try:   
          embed = discord.Embed()   
          embed.set_footer(text= "Enjoy using the bot :))")                         
-         embed.description = "Hi i'm User information bot ,Thanks for adding  me !! \n\nType `info: help` for a list for a list of commands and type `info: example` to view an example of how to use me."        
+         embed.description = "**Hi i'm User information bot ,Thanks for adding  me !! \n\nType `info: help` for a list for a list of commands and type `info: example` to view an example of how to use me.**"        
          embed.color = discord.Color.from_rgb( 117, 255, 255 )             
          await channel.send(embed=embed, components = 
          [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu") , 
-         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"), Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/RW2J349bdu")
+         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"), Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands")
          ]])
-         channel.send("test")
         #await channel.send("Hi i'm User information bot ,Thanks for adding  me !! \n\nType `info: help` for a list for a list of commands and type `info: example` to view an example of how to use me.\n\nenjoy using the bot :)")
         #link = await channel.create_invite(max_age = 0 , max_uses =  0)      
          break
