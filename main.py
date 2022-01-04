@@ -190,8 +190,8 @@ async def on_message(message):
          
           
           embed = discord.Embed() 
-          embed.title =  "__User information__"
-          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`display/server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`has nitro`** - {nitro} \n**`hypesquad`** - {hypesquads[list_num]} \n**`mention`** - <@{discorduser.id}>\n**`is bot`**- {discorduser.bot} \n**`alloted color`**- {discorduser.default_avatar} \n**`Avatar url -`** {discorduser.avatar_url} \n**`in this server -`** {member_in_guild}"               
+          embed.title =  "__User Information__"
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {discorduser.default_avatar} \n**`Avatar url -`** {discorduser.avatar_url} \n**`In this server -`** {member_in_guild}"               
           embed.set_thumbnail(url=discorduser.avatar_url)
           embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)          
           if(member_in_guild == True):                     
@@ -199,7 +199,7 @@ async def on_message(message):
            else: mobile = "Not using mobile currently"
            if(server_member.premium_since == None): boosting_since = "Not boosting this server"
            else: boosting_since = server_member.premium_since
-           embed.add_field(name="__In guild information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
+           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
           #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
           #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
@@ -239,9 +239,9 @@ async def on_message(message):
         security_level = security_levels[security_level_num]
 
         embed = discord.Embed() 
-        embed.title =  "__Guild information__"
+        embed.title =  "__Guild Information__"
         embed.set_thumbnail(url=guild_new.icon_url)
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`created at -`** {created_at} \n**`owner id -`** {owner} \n**`boost level -`** {boosters} \n**`security level -`** {sec_level} \n**`Boosters -`** {subs} ".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , bot_count = bot_count)
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {created_at} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs} ".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , bot_count = bot_count)
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)
         #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
