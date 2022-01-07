@@ -295,7 +295,7 @@ async def on_message(message):
          
         
          guild_id = message.guild.id
-         if(len(client.get_guild(guild_id).members) > 1000):
+         if(len(client.get_guild(guild_id).members) > 6000):
           print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 1000 members```")
           return
          guild_new_members = client.get_guild(guild_id).members              
