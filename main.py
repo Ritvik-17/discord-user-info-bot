@@ -302,7 +302,7 @@ async def on_message(message):
          nitro_users = [] 
          for member in guild_new_members:
           if(str(member.avatar_url).__contains__(".gif")):
-            nitro_users.append(member.mention)         
+            nitro_users.append(member.id)         
          if(nitro_users == []):
            await message.reply("We found no users with nitro in this guild ,if you Feel this is an error please type `info: report bug` to report this issue !" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
          else: 
