@@ -291,9 +291,7 @@ async def on_message(message):
     if (message.content.startswith("info: ping")):
          await message.reply(f'latency ping is {round (client.latency * 1000)} ms')
     
-    if (message.content.startswith("info: nitro users")):
-         
-        
+    if (message.content.startswith("info: nitro users")):                
          guild_id = message.guild.id
          if(len(client.get_guild(guild_id).members) > 6000):
           print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 1000 members```")
@@ -302,11 +300,12 @@ async def on_message(message):
          nitro_users = [] 
          for member in guild_new_members:
           if(str(member.avatar_url).__contains__(".gif")):
-            nitro_users.append(member.id)         
+            nitro_users.append(str(member.id))
+         nitro_users_new = " ".join(str(item) + "\n" for item in nitro_users)
          if(nitro_users == []):
            await message.reply("We found no users with nitro in this guild ,if you Feel this is an error please type `info: report bug` to report this issue !" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
          else: 
-          await message.reply(nitro_users)         
+          await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
    
     if(message.content.startswith("info: server count")):
        
