@@ -293,19 +293,25 @@ async def on_message(message):
     
     if (message.content.startswith("info: nitro users")):                
          guild_id = message.guild.id
-         if(len(client.get_guild(guild_id).members) > 6000):
-          print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 1000 members```")
+         if(len(client.get_guild(guild_id).members) > 10000):
+          print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 10000 members```")
+          await message.reply("Your server has more then 10000 members to use this command please contact RitTheDev#0519")
           return
          guild_new_members = client.get_guild(guild_id).members              
          nitro_users = [] 
          for member in guild_new_members:
           if(str(member.avatar_url).__contains__(".gif")):
             nitro_users.append(str(member.id))
-         nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)
+         nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)  
+         embed = discord.Embed()  
+         embed.title= "Nitro users"
+         embed.description = nitro_users_new               
+         embed.color = discord.Color.from_rgb( 117, 255, 255 )        
          if(nitro_users == []):
-           await message.reply("We found no users with nitro in this guild ,if you Feel this is an error please type `info: report bug` to report this issue !" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
+           await message.reply("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
          else: 
-          await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
+          #await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
+          await message.reply(embed=embed)
    
     if(message.content.startswith("info: server count")):
        
@@ -398,8 +404,9 @@ async def on_message(message):
  except Exception as err:
    try:
      print(int(con_mes[5:None]))
-   except:
-    await message.reply("```⚠ An or has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs (line 380)⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+   except Exception as err:
+    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    print(err)
     pass
 
  await client.process_commands(message)
