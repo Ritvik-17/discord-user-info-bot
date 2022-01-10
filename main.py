@@ -21,7 +21,7 @@ from discord_slash.utils.manage_commands import create_choice , create_option
 intents = discord.Intents().default()
 intents.members = True
 client = commands.Bot(command_prefix='info: ',  intents=intents)
-token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.hEeRaJapSDeFYylXrSCwf9zrQQ0"
+token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.G1Aw7oHBSzm0WCNVlGBR4poC8Ts"
 native_client = discord.Client()
 slash = SlashCommand(client , sync_commands= True)
 
