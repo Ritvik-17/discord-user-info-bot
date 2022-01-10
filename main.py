@@ -9,7 +9,7 @@ from discord.ext.commands.core import check, command
 from discord.flags import Intents
 from discord_slash import SlashCommand , SlashContext, context
 from asyncio.tasks import wait
-from collections import UserList
+from collections import UserList, UserString
 from discord_components import DiscordComponents,ButtonStyle,Button,InteractionEventType, component 
 from discord import message
 from discord_components.dpy_overrides import fetch_message, send
@@ -49,7 +49,8 @@ async def help(ctx:SlashContext):
 @client.event
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
-    await client.change_presence(status=discord.Status.online , activity=discord.Activity(type=discord.ActivityType.watching, name="info: help | {users} users !".format(users = client.users)))
+    await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="info: help | {users}".format(users = len(client.users))))
+    print(len(client.users))
     '''for i in client.guilds:
       print(i.owner.id)'''
 
