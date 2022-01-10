@@ -49,7 +49,7 @@ async def help(ctx:SlashContext):
 @client.event
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
-    await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="info: help | {users}".format(users = len(client.users))))
+    await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="info: help | on {users} users !".format(users = len(client.users))))
     print(len(client.users))
     '''for i in client.guilds:
       print(i.owner.id)'''
