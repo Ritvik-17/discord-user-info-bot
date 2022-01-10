@@ -2,6 +2,7 @@ import discord
 import os
 from discord import guild
 from discord import user
+from discord.activity import Game
 from discord.ext.commands import bot
 from discord.ext.commands.converter import clean_content
 from discord.ext.commands.core import check, command
@@ -48,8 +49,7 @@ async def help(ctx:SlashContext):
 @client.event
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
-    await client.change_presence(status=discord.Status.online , activity= discord.Game('info: help'))
-   
+    await client.change_presence(status=discord.Status.online , activity=discord.Activity(type=discord.ActivityType.watching, name="info: help | {users} users !".format(users = client.users)))
     '''for i in client.guilds:
       print(i.owner.id)'''
 
