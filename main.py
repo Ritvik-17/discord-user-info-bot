@@ -302,7 +302,7 @@ async def on_message(message):
          nitro_users = [] 
          for member in guild_new_members:
           if(str(member.avatar_url).__contains__(".gif")):
-            nitro_users.append(str(member.id))
+            nitro_users.append(str(member.mention))
          nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)  
          embed = discord.Embed()  
          embed.title= "Nitro users"
