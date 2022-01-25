@@ -13,10 +13,6 @@ from discord import message
 from discord_components.dpy_overrides import send
 from yarl import URL
 from discord.ext import commands
-from discord_slash import cog_ext
-
-
-
 
 
 class All_commands(commands.Cog):
@@ -98,8 +94,7 @@ class All_commands(commands.Cog):
 
  @commands.command()
  async def guildid(self,ctx):  
-     await ctx.reply("```Please enter the id of the guild instead of the word 'guildid' the input should look something like info: 834089778215125002 & type info: example for more information```") 
-
+     await ctx.reply("```Please enter the id of the guild instead of the word 'guildid' the input should look something like info: 834089778215125002 & type info: example for more information```")   
 
                         
 
