@@ -303,11 +303,14 @@ async def on_message(message):
          for member in guild_new_members:
           if(str(member.avatar_url).__contains__(".gif")):
             nitro_users.append(str(member.mention))
+            if(len(nitro_users) > 180):          
+               await message.reply("Hang on ! There are too many people with nitro in this server to fit in a message , Dm RitTheDev#0519 (bot's developer) for the full list !"  , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])
+               break
          nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)  
          embed = discord.Embed()  
          embed.title= "Nitro users"
          embed.description = nitro_users_new               
-         embed.color = discord.Color.from_rgb( 117, 255, 255 )        
+         embed.color = discord.Color.from_rgb( 117, 255, 255 )     
          if(nitro_users == []):
            await message.reply("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.gg/RW2J349bdu")]])        
          else: 
