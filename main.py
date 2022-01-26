@@ -1,19 +1,12 @@
+from pydoc import cli
 import discord 
 import os
-from discord import guild
-from discord import user
-from discord.activity import Game
 from discord.ext.commands import bot
 from discord.ext.commands.converter import clean_content
 from discord.ext.commands.core import check, command
-from discord.flags import Intents
 from discord_slash import SlashCommand , SlashContext, context
-from asyncio.tasks import wait
-from collections import UserList, UserString
 from discord_components import DiscordComponents,ButtonStyle,Button,InteractionEventType, component 
-from discord import message
 from discord_components.dpy_overrides import fetch_message, send
-from yarl import URL
 from discord.ext import commands
 from discord_slash import SlashCommand , SlashContext
 from discord_slash.utils.manage_commands import create_choice , create_option
@@ -28,12 +21,20 @@ slash = SlashCommand(client , sync_commands= True)
 #cleaning
 client.remove_command("help")
 limit_count = 0
-guild_ids=[888989551027163146]
+guild_ids=[]
+no_autoresponse_guilds=[]
+
+@client.event
+async def on_ready():
+    print('On ready: We have logged in as {0.user}'.format(client))    
+    await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="info: help | on {users} users !".format(users = len(client.users))))
+    for guild_id in client.guilds:  
+      guild_ids.append(guild_id.id)
 
 def LogIdentifier(ctx , command):
  print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname} (slash command)".format(author = ctx.author.name , message_ = command,authorid = ctx.author.id , guildid = ctx.guild.id,channelid = ctx.channel.id , guildname = ctx.guild.name))
 
-@slash.slash(name="help" , description="Get a list of all commands and how to use the bot")
+@slash.slash(name="help" , description="Get a list of all commands and how to use the bot" , guild_ids=guild_ids)
 async def help(ctx:SlashContext):
         LogIdentifier(ctx , "help")
         embed = discord.Embed()   
@@ -50,44 +51,7 @@ async def help(ctx:SlashContext):
 @slash.slash(name="ping" , description="Know the bot's latency !" , guild_ids=guild_ids)
 async def ping(ctx:SlashContext):
         LogIdentifier(ctx , "ping")
-        await ctx.reply(f'latency ping is {round (client.latency * 1000)} ms')
-        
-        
-
-@client.event
-async def on_ready():
-    print('On ready: We have logged in as {0.user}'.format(client))    
-    await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="info: help | on {users} users !".format(users = len(client.users))))
-    #print(len(client.users))
-    '''for i in client.guilds:
-      print(i.owner.id)'''
-
-    '''for i in client.guilds:
-     print(i.id)'''
-
-
-    '''
-           bot_count_new = 0  for bot_count_mem in client.get_guild(i.id).members:
-      if bot_count_mem.bot:
-        bot_count_new = bot_count_new + 1 '''
-     #print(str(i.member_count) + "," + str(bot_count_new))
-
-    '''for i in range(0,160):      
-       try:          
-         guild =  client.guilds[i]
-         channel = guild.text_channels[0]     
-       
-         if(guild.id == 834089778215125002):
-          link = await channel.create_invite(max_age = 0)          
-          print(link)
-         else:
-            print("not the guild searching .....")
-       except:
-           print("error with {guildid}".format(guildid = guild.id))
-           i = i + 1 '''
-     
-    
-
+        await ctx.reply(f'latency ping is {round (client.latency * 1000)} ms')              
 
  
 @client.event
@@ -123,10 +87,88 @@ async def on_guild_remove(guild):
 
 
 @client.event
-async def on_message(message):
- try:
-  if(message.content.startswith("info:")): 
-    
+async def on_message(message):  
+ try:  
+  if(str(message.guild.id) in no_autoresponse_guilds):
+    print("Didnt run automated information as owner prefered not to")
+    pass
+  else:
+   if(len(message.content) == 18 and int(message.content)):
+          print("Used automated information !! author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
+          #uid function    
+          discorduser = await client.fetch_user(message.content)
+          nitro = False
+          member_in_guild = False       
+          #discorduserprofile  = await client.fetch_user_profile(id)      
+          #checking hypesquad
+          list_num = 3
+          hypesquads = ["brilliance" , "bravery" ,"balance" , "none"]
+          if(discorduser.public_flags.hypesquad_brilliance == True): list_num = 0
+          if(discorduser.public_flags.hypesquad_bravery == True): list_num = 1
+          if(discorduser.public_flags.hypesquad_balance == True): list_num = 2
+          #if(discorduser.public_flags.hypesquad == False): list_num = 3
+          #in the server methods          
+          server_member = ""          
+          for member in message.guild.members:
+            if(member.id == discorduser.id):
+              server_member = member
+
+          if str(discorduser.avatar_url).__contains__(".gif"): nitro = True
+          
+          mobile =""
+          boosting_since = ""
+
+          for mem_id in message.guild.members:
+               if(mem_id.id == discorduser.id):
+                   member_in_guild = True         
+          
+          discorduser = await client.fetch_user(message.content)
+          nitro = False
+          member_in_guild = False       
+          #discorduserprofile  = await client.fetch_user_profile(id)      
+          #checking hypesquad
+          list_num = 3
+          hypesquads = ["brilliance" , "bravery" ,"balance" , "none"]
+          if(discorduser.public_flags.hypesquad_brilliance == True): list_num = 0
+          if(discorduser.public_flags.hypesquad_bravery == True): list_num = 1
+          if(discorduser.public_flags.hypesquad_balance == True): list_num = 2
+          #if(discorduser.public_flags.hypesquad == False): list_num = 3
+          #in the server methods          
+          server_member = ""          
+          for member in message.guild.members:
+            if(member.id == discorduser.id):
+              server_member = member
+
+          if str(discorduser.avatar_url).__contains__(".gif"): nitro = True
+          
+          mobile =""
+          boosting_since = ""
+
+          for mem_id in message.guild.members:
+               if(mem_id.id == discorduser.id):
+                   member_in_guild = True
+
+         
+          
+          embed = discord.Embed() 
+          embed.title =  "__User Information__"
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {discorduser.default_avatar} \n**`Avatar url -`** {discorduser.avatar_url} \n**`In this server -`** {member_in_guild}"               
+          embed.set_thumbnail(url=discorduser.avatar_url)
+          embed.set_footer(text= "requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator), icon_url=message.author.avatar_url)          
+          if(member_in_guild == True):                     
+           if(server_member.is_on_mobile()): mobile = "yes" 
+           else: mobile = "Not using mobile currently"
+           if(server_member.premium_since == None): boosting_since = "Not boosting this server"
+           else: boosting_since = server_member.premium_since
+           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
+          #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
+          #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
+          embed.color = discord.Color.from_rgb( 117, 255, 255 )
+          await message.reply(embed = embed)
+ except Exception as Err:
+  pass
+ try:  
+  if(message.content.startswith("info:")):     
     print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
     used_guild_command = True
     used_main_command = True
@@ -426,9 +468,6 @@ async def on_message(message):
 
  
  
-
-
-
 #loading cogs and extintions
 os.chdir(os.getcwd())
 for filename in os.listdir("./cogs"):
@@ -437,3 +476,34 @@ for filename in os.listdir("./cogs"):
     
 
 client.run(token)    
+
+''' old code 
+    for i in client.guilds:
+      print(i.owner.id)
+
+    for i in client.guilds:
+     print(i.id)
+
+
+    
+           bot_count_new = 0  for bot_count_mem in client.get_guild(i.id).members:
+      if bot_count_mem.bot:
+        bot_count_new = bot_count_new + 1 
+     #print(str(i.member_count) + "," + str(bot_count_new))
+
+    for i in range(0,160):      
+       try:          
+         guild =  client.guilds[i]
+         channel = guild.text_channels[0]     
+       
+         if(guild.id == 834089778215125002):
+          link = await channel.create_invite(max_age = 0)          
+          print(link)
+         else:
+            print("not the guild searching .....")
+       except:
+           print("error with {guildid}".format(guildid = guild.id))
+           i = i + 1 
+     
+
+'''
