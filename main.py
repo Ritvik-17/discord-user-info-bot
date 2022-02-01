@@ -409,7 +409,7 @@ async def privacypolicy(ctx:SlashContext):
 @client.slash_command(name="updates" , description="View the recent update the bot has recieved")
 async def updates(ctx:SlashContext): 
    LogIdentifier(ctx , "updates") 
-   await ctx.respond("```md\nUser information bot v2.6 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , view = SupportServerView())
+   await ctx.respond("```md\nUser information bot v2.7 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , view = SupportServerView())
 
 @client.slash_command(name="reportbug" , description="Found a bug? , then please report it")
 async def reportbug(ctx:SlashContext):
@@ -749,7 +749,7 @@ async def on_message(message):
            [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
            ])
     if (message.content.startswith("info: updates")):     
-        await message.reply("```md\nUser information bot v2.6 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , components = [
+        await message.reply("```md\nUser information bot v2.7 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , components = [
            [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
            ]) 
     
@@ -815,7 +815,7 @@ async def on_message(message):
         embed.description = "This bot's core purpose is to get user information from an id , maybe you can do this with other bots but they are very limited ,User information bot is better and dedicated for this purpose with maximum information about a user or server !"
         embed.add_field(name="__Total Users__" , value= str(len(client.users)) +" users !" , inline= True)
         embed.add_field(name="__Total Servers__" , value="Used in " + str(len(client.guilds)) + " servers!" , inline= True)
-        embed.add_field(name="__Version__" , value="v2.6" , inline= True)        
+        embed.add_field(name="__Version__" , value="v2.7" , inline= True)        
         discorduser = await client.fetch_user(888985968554688512)   
         embed.set_thumbnail(url= discorduser.avatar.url)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
