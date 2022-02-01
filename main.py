@@ -835,11 +835,6 @@ async def on_message(message):
            Button(style=ButtonStyle.URL , label="Sub-reddit" , url =  "https://www.reddit.com/r/ritthedev_community/") , 
            Button(style=ButtonStyle.URL , label="Mail us" , url =  "https://mail.google.com/mail/u/0/#inbox?compose=new")                     
            ]])      
-    if message.content.startswith("info: invite"):
-        await message.reply( " ` click the invite button to add me into your server !!! ` " , 
-           components = [
-           [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
-           ])
 
     if message.content == "info: id help":
           embed = discord.Embed()
