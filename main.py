@@ -410,7 +410,7 @@ async def reportbug(ctx:SlashContext):
 @client.slash_command(name="invite" , description="Invite me into another server !!")
 async def invite(ctx:SlashContext):
          LogIdentifier(ctx , "invite")    
-         await ctx.respond( " ` Click the invite button to add me into your server !!! ` " , view = InviteView)     
+         await ctx.respond( " ` Click the invite button to add me into your server !!! ` " , view = InviteView())     
       
 ''' Archieve slash commands
 
