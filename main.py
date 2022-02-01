@@ -39,10 +39,10 @@ class HelpCommandView(discord.ui.View):
         super().__init__()    
         url = f"https://discord.com/invite/gzaz9SSkkW"
         url2 = f"https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"
-        url3 = f"https://top.gg/bot/888985968554688512/vote"
+        url3 =f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
         self.add_item(discord.ui.Button(label="Support server", url=url))
         self.add_item(discord.ui.Button(label="Example", url=url2))
-        self.add_item(discord.ui.Button(label="Vote", url=url3))
+        self.add_item(discord.ui.Button(label="Invite", url=url3))
 
 class IdHelpView(discord.ui.View):
     def __init__(self):
@@ -109,6 +109,12 @@ class ReportBugView(discord.ui.View):
         self.add_item(discord.ui.Button(label="Support server", url=url))
         self.add_item(discord.ui.Button(label="Mail us", url=url3))
         self.add_item(discord.ui.Button(label="Contact developer", url=url2))  
+
+class InviteView(discord.ui.View):
+    def __init__(self):
+        super().__init__()    
+        url=f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
+        self.add_item(discord.ui.Button(label="Invite", url=url))  
 
 
 
@@ -215,7 +221,7 @@ async def help(ctx:SlashContext):
         LogIdentifier(ctx , "help")
         embed = discord.Embed()           
         embed.title= "Information help"
-        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) \n• Click [here](https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands) to add me into another server  \n• feel free to join our support server [here](https://discord.com/invite/gzaz9SSkkW)**"
+        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
         embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support` ,`this` , `thisg`" , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
@@ -400,6 +406,11 @@ async def reportbug(ctx:SlashContext):
          embed2.set_footer(text= "Requested by {clientname}#{clientdiscriminator} ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
          embed2.color = discord.Color.dark_orange()
          await ctx.respond(embed=embed2  ,view = ReportBugView()) 
+
+@client.slash_command(name="invite" , description="Invite me into another server !!")
+async def invite(ctx:SlashContext):
+         LogIdentifier(ctx , "invite")    
+         await ctx.respond( " ` Click the invite button to add me into your server !!! ` " , view = InviteView)     
       
 ''' Archieve slash commands
 
