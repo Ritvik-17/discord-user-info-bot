@@ -155,10 +155,10 @@ async def Userinformation(id , ctx):
            Avatar_url = discorduser.avatar.url
           except:
            Avatar_url = str(discorduser.default_avatar)
-          
+          ucc =  discorduser.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
           embed = discord.Embed() 
           embed.title =  "__User Information__"
-          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`User id -`** {discorduser.id}  \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {ucc} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
           try:
            embed.set_thumbnail(url=discorduser.avatar.url)
           except:
@@ -185,7 +185,7 @@ async def GuildInformation(g_id,ctx):
          # if bot_count_mem.bot:
           #  bot_count = bot_count + 1
         guild_desciption = guild_new.description
-        guild_made_at = guild_new.created_at
+        guild_made_at = guild_new.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
         owner = guild_new.owner_id      
         boost_tier = guild_new.premium_tier        
         #member_count = client.get_guild(g_id).member_count
@@ -200,11 +200,26 @@ async def GuildInformation(g_id,ctx):
 
         embed = discord.Embed() 
         embed.title =  "__Guild Information__"
+        text_channel_list = []
+        categories_count =[]
+        for server in client.guilds:
+          if(server.id == guild_new.id):
+           for category in server.categories:
+             categories_count.append(category)
+           for channel in server.channels:
+            if str(channel.type) == 'text':
+             text_channel_list.append(channel)
+
         try:
          embed.set_thumbnail(url=guild_new.icon.url)
         except:
           pass
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} (error)\n**`Bots -`** {bot_count} (error)\n **`Created at -`** {created_at} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs} ".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , bot_count = bot_count)
+        ucc =  guild_new.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {ucc} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs}\n**`Roles -`** {Rolecount}\n**`Text channels -`** {tcc}\n**`Categories-`** {cc}\n**`NSFW level -`** {NSFW_level} ".format(
+          name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at
+           ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , 
+           bot_count = bot_count , Rolecount = len(guild_new.roles) , NSFW_level = guild_new.nsfw_level , cc = len(categories_count) , tcc = len(text_channel_list)
+          )
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
         #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
@@ -222,7 +237,7 @@ async def help(ctx:SlashContext):
         embed = discord.Embed()           
         embed.title= "Information help"
         embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support` ,`this` , `thisg`" , inline= False)
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite` " , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
@@ -515,7 +530,8 @@ async def on_message(message):
           
           embed = discord.Embed() 
           embed.title =  "__User Information__"
-          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
+          ucc =  discorduser.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`User id -`** {discorduser.id} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {ucc} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
           try:
            embed.set_thumbnail(url=discorduser.avatar.url)
           except:
@@ -633,7 +649,8 @@ async def on_message(message):
           
           embed = discord.Embed() 
           embed.title =  "__User Information__"
-          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {discorduser.created_at} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
+          ucc =  discorduser.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
+          embed.description = f"**`User name -`** {discorduser.name}#{discorduser.discriminator} \n**`User id -`** {discorduser.id} \n**`Display/Server name`** - {discorduser.display_name} \n**`Created at-`**  - {ucc} \n**`Has nitro`** - {nitro} \n**`Hypesquad`** - {hypesquads[list_num]} \n**`Mention`** - <@{discorduser.id}>\n**`Is bot?`**- {discorduser.bot} \n**`Alloted color`**- {str(ColorMatcher(str(discorduser.default_avatar)[41:42]))} \n**`Avatar url -`** {Avatar_url} \n**`In this server -`** {member_in_guild}"               
           try:
            embed.set_thumbnail(url=discorduser.avatar.url)
           except:            
@@ -648,6 +665,7 @@ async def on_message(message):
           #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
           #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
+          
           await message.reply(embed = embed)
         except Exception as err:
           await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs Error Code - {err} ⚠ ```".format(err = err), components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
@@ -671,7 +689,7 @@ async def on_message(message):
             bot_count = bot_count + 1
 
         guild_desciption = guild_new.description
-        guild_made_at = guild_new.created_at
+        guild_made_at = guild_new.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
         owner = guild_new.owner_id      
         boost_tier = guild_new.premium_tier        
         member_count = client.get_guild(g_id).member_count
@@ -685,16 +703,32 @@ async def on_message(message):
 
         embed = discord.Embed() 
         embed.title =  "__Guild Information__"
+
+        text_channel_list = []
+        categories_count =[]
+        for server in client.guilds:
+          if(server.id == guild_new.id):
+           for category in server.categories:
+             categories_count.append(category)
+           for channel in server.channels:
+            if str(channel.type) == 'text':
+             text_channel_list.append(channel)
+
         try:
          embed.set_thumbnail(url=guild_new.icon.url)
         except:
           pass
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {created_at} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs} ".format(name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , bot_count = bot_count)
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {created_at} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs}\n**`Roles -`** {Rolecount}\n**`Text channels -`** {tcc}\n**`Categories-`** {cc}\n**`NSFW level -`** {NSFW_level} ".format(
+          name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at
+           ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , 
+           bot_count = bot_count , Rolecount = len(guild_new.roles), NSFW_level = guild_new.nsfw_level , cc = len(categories_count) , tcc = len(text_channel_list)
+          )
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator))
         #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
         #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: how to guild id` to know how to get a users or guilds id")
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
+ 
         await message.reply(embed = embed)
         
        except Exception as err:
@@ -755,10 +789,10 @@ async def on_message(message):
           
     if(message.content == "info: help"):
         embed = discord.Embed()   
-        embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator))                 
+        embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator))                          
         embed.title= "Information help"
-        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id` , `support`, `autoinfo` ,`this` , `thisg` , `about bot`" , inline= False)
+        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support` ,`this` , `thisg` ,`invite` " , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
