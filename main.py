@@ -11,6 +11,7 @@ from discord_slash import SlashCommand , SlashContext
 from discord_slash.utils.manage_commands import create_choice , create_option
 from discord.ui import View
 from discord.commands import Option
+from discord.commands import SlashCommandGroup
 
 
 #Variables
@@ -115,6 +116,93 @@ class InviteView(discord.ui.View):
         super().__init__()    
         url=f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
         self.add_item(discord.ui.Button(label="Invite", url=url))  
+
+#groups
+nitro = SlashCommandGroup("nitro", "nitro users command")
+site = SlashCommandGroup("site", "site list command")
+privacy = SlashCommandGroup("privacy", "privacy policy command")
+report = SlashCommandGroup("report", "report bug command")
+about = SlashCommandGroup("about", "about bot command")
+@nitro.command(name="users" , description="Get a list of nitro users in your server !")
+async def nitrousers(ctx:SlashContext):
+         LogIdentifier(ctx , "nitro users")
+         guild_id = ctx.guild.id
+         if(len(client.get_guild(guild_id).members) > 10000):
+          print("```your server has too many members to scan for ie more than thousand fetching nitro users isnt currently available for servers with more than 10000 members```")
+          await ctx.respond("Your server has more then 10000 members to use this command please contact RitTheDev#0519")
+          return
+         guild_new_members = client.get_guild(guild_id).members              
+         nitro_users = []          
+         for member in guild_new_members:
+          try:
+           if(str(member.avatar.url).__contains__(".gif")):            
+            nitro_users.append(str(member.mention))
+            if(len(nitro_users) > 180):          
+               await ctx.respond("Hang on ! There are too many people with nitro in this server to fit in a message , Dm RitTheDev#0519 (bot's developer) for the full list !"  ,view = SupportServerView())
+               break
+          except:
+            continue
+         nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)  
+         embed = discord.Embed()  
+         embed.title= "Nitro users"
+         embed.description = nitro_users_new               
+         embed.color = discord.Color.from_rgb( 117, 255, 255 )     
+         if(nitro_users == []):
+           await ctx.respond("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , View = SupportServerView())        
+         else: 
+          #await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
+          await ctx.respond(embed=embed)
+
+@site.command(name="list" , description="Know the sites our bot is available")
+async def sitelist(ctx:SlashContext):  
+         LogIdentifier(ctx , "site list")
+         embed2 = discord.Embed()    
+         embed2.title =  " <:emoji:890928633206677505> Site list" 
+         embed2.description = "**A list of sites where out bot is available at \n\n• top.gg \n• discord bot list \n• discord bots.gg \n• infinity bot list \n• discord extreme list **\n\nvisit those pages by clicking the buttons below"        
+         embed2.set_footer(text= "Requested by {clientname}#{clientdiscriminator}".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
+         embed2.color = discord.Color.from_rgb( 117, 255, 255 )
+         await ctx.respond(embed=embed2,view = SiteListView())
+
+@privacy.command(name="policy" , description="Privacy, Thats us !!")
+async def privacypolicy(ctx:SlashContext):
+     LogIdentifier(ctx , "privacy policy")  
+     await ctx.respond("```We dont store any user information and log only the guilds joined and commands used by the user and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !! \n\n➤ why we need the data and how we use it \nwe use it to improve user experience and know how the bot is doing with the users \n\n➤ who do we share the data \nwe dont share it to anyone and it is limited to our servers and local copies \n\n➤ how to contact or request to delete your data \nvisit https://ritthedev.itch.io/ and there are various ways listed over there to contact us if we didnt respond any where then , mail us at ritthedevcontact@gmail.com or join our support server and in the #support channel ask @developmentteam to delete your data we will do it within 24 hrs \n\nThank you !```")
+
+@report.command(name="bug" , description="Found a bug? , then please report it")
+async def reportbug(ctx:SlashContext):
+         LogIdentifier(ctx , "report bug")    
+         embed2 = discord.Embed()    
+         embed2.title =  " <:emoji:890928633206677505> Report a bug 🛠" 
+         embed2.description = "**Reporting bugs would be really great and would improve the bot for many users using it**"        
+         embed2.add_field(name="__How to report a bug__" , value = "➤ join our community server and in #bug-reports send ur bug and we will fix it soon and infom you \n➤ visit our sub-reddit page and post your bug \n➤ mail your bug to ✉ ritthedevcontact@gmail.com and we will reply soon \nthank you !!" , inline= False)
+         embed2.set_footer(text= "Requested by {clientname}#{clientdiscriminator} ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
+         embed2.color = discord.Color.dark_orange()
+         await ctx.respond(embed=embed2  ,view = ReportBugView()) 
+
+@about.command(name="bot" , description="Know about the developers and the bot!")
+async def aboutbot(ctx:SlashContext):
+        LogIdentifier(ctx , "aboutbot")
+        embed = discord.Embed()   
+        embed.set_footer(text= "A project by RitTheDev#0519" , icon_url="https://cdn.discordapp.com/avatars/764736831643975693/29372d85837ce1b747e98297a3e00b93.png?size=1024")                 
+        embed.title= "About Bot"        
+        embed.description = "This bot's core purpose is to get user information from an id , maybe you can do this with other bots but they are very limited ,User information bot is better and dedicated for this purpose with maximum information about a user or server !"
+        embed.add_field(name="__Total Users__" , value= str(len(client.users)) +" users !" , inline= True)
+        embed.add_field(name="__Total Servers__" , value="Used in " + str(len(client.guilds)) + " servers!" , inline= True)
+        embed.add_field(name="__Version__" , value="v1.6" , inline= True)        
+        discorduser = await client.fetch_user(888985968554688512)   
+        embed.set_thumbnail(url= discorduser.avatar.url)
+        #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
+        embed.color = discord.Color.from_rgb( 117, 255, 255 )
+        await ctx.respond(embed = embed,view = AboutView())
+
+
+
+client.add_application_command(nitro)
+client.add_application_command(site)
+client.add_application_command(privacy)
+client.add_application_command(report)
+client.add_application_command(about)
+
 
 
 
@@ -237,7 +325,7 @@ async def help(ctx:SlashContext):
         embed = discord.Embed()           
         embed.title= "Information help"
         embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite` " , inline= False)
+        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite`,`about bot` " , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
@@ -288,22 +376,6 @@ async def this(ctx:SlashContext):
 @client.slash_command(name="thisg" , description="Know information about the guild you used the commmand in")
 async def thisg(ctx:SlashContext):
         await ctx.respond(embed = await GuildInformation(ctx.guild.id , ctx)) 
-
-@client.slash_command(name="aboutbot" , description="Know about the developers and the bot!")
-async def aboutbot(ctx:SlashContext):
-        LogIdentifier(ctx , "aboutbot")
-        embed = discord.Embed()   
-        embed.set_footer(text= "A project by RitTheDev#0519" , icon_url="https://cdn.discordapp.com/avatars/764736831643975693/29372d85837ce1b747e98297a3e00b93.png?size=1024")                 
-        embed.title= "About Bot"        
-        embed.description = "This bot's core purpose is to get user information from an id , maybe you can do this with other bots but they are very limited ,User information bot is better and dedicated for this purpose with maximum information about a user or server !"
-        embed.add_field(name="__Total Users__" , value= str(len(client.users)) +" users !" , inline= True)
-        embed.add_field(name="__Total Servers__" , value="Used in " + str(len(client.guilds)) + " servers!" , inline= True)
-        embed.add_field(name="__Version__" , value="v1.6" , inline= True)        
-        discorduser = await client.fetch_user(888985968554688512)   
-        embed.set_thumbnail(url= discorduser.avatar.url)
-        #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
-        embed.color = discord.Color.from_rgb( 117, 255, 255 )
-        await ctx.respond(embed = embed,view = AboutView())
 
 @client.slash_command(name="info" , description="Get information about a user or guild")
 async def information(
@@ -360,6 +432,32 @@ async def whomadeyou(ctx:SlashContext):
      else:
       await ctx.respond("**RitTheDev#0519** made me and {author_name} you are most welcomed join our community server :)".format(author_name = ctx.author.name), view =  AboutView())              
 
+
+@client.slash_command(name="updates" , description="View the recent update the bot has recieved")
+async def updates(ctx:SlashContext): 
+   LogIdentifier(ctx , "updates") 
+   await ctx.respond("```md\nUser information bot v2.7 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , view = SupportServerView())
+
+
+
+@client.slash_command(name="invite" , description="Invite me into another server !!")
+async def invite(ctx:SlashContext):
+         LogIdentifier(ctx , "invite")    
+         await ctx.respond( " ` Click the invite button to add me into your server !!! ` " , view = InviteView())   
+      
+      
+''' 
+Archieve slash commands
+
+@client.slash_command(name="id" , description="Enter parameter instead of /id")
+async def id(ctx:SlashContext):
+        LogIdentifier(ctx , "id")
+        await ctx.respond("```Please enter the id of the user instead of the word 'ID' the input should look something like info: 764736831643975693 & type info: example for more information```") 
+@client.slash_command(name="guildid" , description="Enter parameter instead of /guildid")
+async def guild_id(ctx:SlashContext):
+          LogIdentifier(ctx , "guildid")
+          await ctx.respond("```Please enter the id of the guild instead of the word 'guildid' the input should look something like info: 834089778215125002 & type info: example for more information```")  
+
 @client.slash_command(name="nitrousers" , description="Get a list of nitro users in your server !")
 async def nitrousers(ctx:SlashContext):
          LogIdentifier(ctx , "nitro users")
@@ -390,55 +488,6 @@ async def nitrousers(ctx:SlashContext):
          else: 
           #await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
           await ctx.respond(embed=embed)
-
-@client.slash_command(name="sitelist" , description="Know the sits our bot is available")
-async def sitelist(ctx:SlashContext):  
-         LogIdentifier(ctx , "site list")
-         embed2 = discord.Embed()    
-         embed2.title =  " <:emoji:890928633206677505> Site list" 
-         embed2.description = "**A list of sites where out bot is available at \n\n• top.gg \n• discord bot list \n• discord bots.gg \n• infinity bot list \n• discord extreme list **\n\nvisit those pages by clicking the buttons below"        
-         embed2.set_footer(text= "Requested by {clientname}#{clientdiscriminator}".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
-         embed2.color = discord.Color.from_rgb( 117, 255, 255 )
-         await ctx.respond(embed=embed2,view = SiteListView())
-
-@client.slash_command(name="privacypolicy" , description="Privacy, Thats us !!")
-async def privacypolicy(ctx:SlashContext):
-     LogIdentifier(ctx , "privacy policy")  
-     await ctx.respond("```We dont store any user information and log only the guilds joined and commands used by the user and delete the data within few days also we store the data offline ie locally so that no-one can access it or breach into it !! \n\n➤ why we need the data and how we use it \nwe use it to improve user experience and know how the bot is doing with the users \n\n➤ who do we share the data \nwe dont share it to anyone and it is limited to our servers and local copies \n\n➤ how to contact or request to delete your data \nvisit https://ritthedev.itch.io/ and there are various ways listed over there to contact us if we didnt respond any where then , mail us at ritthedevcontact@gmail.com or join our support server and in the #support channel ask @developmentteam to delete your data we will do it within 24 hrs \n\nThank you !```")
-
-@client.slash_command(name="updates" , description="View the recent update the bot has recieved")
-async def updates(ctx:SlashContext): 
-   LogIdentifier(ctx , "updates") 
-   await ctx.respond("```md\nUser information bot v2.7 (Update)\n\n#New\n- Added autoinfo feature\n\n#Changes \n- Fixed slash commands (Will add more soon) \n\n#bug fixes \n- Fixed many minor bugs```" , view = SupportServerView())
-
-@client.slash_command(name="reportbug" , description="Found a bug? , then please report it")
-async def reportbug(ctx:SlashContext):
-         LogIdentifier(ctx , "report bug")    
-         embed2 = discord.Embed()    
-         embed2.title =  " <:emoji:890928633206677505> Report a bug 🛠" 
-         embed2.description = "**Reporting bugs would be really great and would improve the bot for many users using it**"        
-         embed2.add_field(name="__How to report a bug__" , value = "➤ join our community server and in #bug-reports send ur bug and we will fix it soon and infom you \n➤ visit our sub-reddit page and post your bug \n➤ mail your bug to ✉ ritthedevcontact@gmail.com and we will reply soon \nthank you !!" , inline= False)
-         embed2.set_footer(text= "Requested by {clientname}#{clientdiscriminator} ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
-         embed2.color = discord.Color.dark_orange()
-         await ctx.respond(embed=embed2  ,view = ReportBugView()) 
-
-@client.slash_command(name="invite" , description="Invite me into another server !!")
-async def invite(ctx:SlashContext):
-         LogIdentifier(ctx , "invite")    
-         await ctx.respond( " ` Click the invite button to add me into your server !!! ` " , view = InviteView())     
-      
-''' Archieve slash commands
-
-@client.slash_command(name="id" , description="Enter parameter instead of /id")
-async def id(ctx:SlashContext):
-        LogIdentifier(ctx , "id")
-        await ctx.respond("```Please enter the id of the user instead of the word 'ID' the input should look something like info: 764736831643975693 & type info: example for more information```") 
-@client.slash_command(name="guildid" , description="Enter parameter instead of /guildid")
-async def guild_id(ctx:SlashContext):
-          LogIdentifier(ctx , "guildid")
-          await ctx.respond("```Please enter the id of the guild instead of the word 'guildid' the input should look something like info: 834089778215125002 & type info: example for more information```")  
-
-
 
 '''
 
@@ -481,7 +530,6 @@ async def on_guild_remove(guild):
             break
         except:            
             continue
-
 
 @client.event
 async def on_message(message): 
@@ -774,7 +822,6 @@ async def on_message(message):
                break
           except:
             continue
-         print("Running")
          nitro_users_new = "".join(str(item) + "\n" for item in nitro_users)  
          embed = discord.Embed()  
          embed.title= "Nitro users"
@@ -915,7 +962,8 @@ async def on_message(message):
     await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
     print(err)
     pass
-    
+
+
 client.run(token)
 
 
