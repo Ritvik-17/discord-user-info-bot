@@ -17,7 +17,7 @@ from discord.commands import SlashCommandGroup
 #Variables
 intents = discord.Intents().default()
 intents.members = True
-client = discord.Bot(intents=intents ,debug_guilds=[834089778215125002])
+client = discord.Bot(intents=intents)
 #debug_guilds=[888989551027163146,834089778215125002] 
 token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.G1Aw7oHBSzm0WCNVlGBR4poC8Ts"
 #slash = SlashCommand(client , sync_commands= True)
