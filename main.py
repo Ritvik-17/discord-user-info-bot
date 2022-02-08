@@ -17,7 +17,7 @@ from discord.commands import SlashCommandGroup
 #Variables
 intents = discord.Intents().default()
 intents.members = True
-client = discord.Bot(intents=intents)
+client = discord.Bot(intents=intents ,debug_guilds=[834089778215125002])
 #debug_guilds=[888989551027163146,834089778215125002] 
 token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.G1Aw7oHBSzm0WCNVlGBR4poC8Ts"
 #slash = SlashCommand(client , sync_commands= True)
@@ -148,7 +148,7 @@ async def nitrousers(ctx:SlashContext):
          embed.description = nitro_users_new               
          embed.color = discord.Color.from_rgb( 117, 255, 255 )     
          if(nitro_users == []):
-           await ctx.respond("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , View = SupportServerView())        
+           await ctx.respond("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , view = SupportServerView())        
          else: 
           #await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
           await ctx.respond(embed=embed)
@@ -268,7 +268,7 @@ async def Userinformation(id , ctx):
 
 async def GuildInformation(g_id,ctx):
         guild_new = await client.fetch_guild(g_id)
-        bot_count = 0
+        #print("Running 1")
         #for bot_count_mem in client.get_guild(g_id).members:
          # if bot_count_mem.bot:
           #  bot_count = bot_count + 1
@@ -276,9 +276,8 @@ async def GuildInformation(g_id,ctx):
         guild_made_at = guild_new.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
         owner = guild_new.owner_id      
         boost_tier = guild_new.premium_tier        
-        #member_count = client.get_guild(g_id).member_count
-        member_count = 0 
-        subscribers = len(client.get_guild(g_id).premium_subscribers)
+        #member_count = client.get_guild(g_id).member_count   
+        #subscribers = 0 #len(client.get_guild(g_id).premium_subscribers) 
         #for member in client.get_guild(g_id):
           #member_count += 1
         security_level= "none"
@@ -290,23 +289,30 @@ async def GuildInformation(g_id,ctx):
         embed.title =  "__Guild Information__"
         text_channel_list = []
         categories_count =[]
-        for server in client.guilds:
+        member_count = 0
+        bot_count =0 
+        for server in client.guilds:          
           if(server.id == guild_new.id):
+           for member in server.members:
+                member_count = member_count + 1
+                if member.bot == True:
+                 bot_count = bot_count + 1
            for category in server.categories:
              categories_count.append(category)
            for channel in server.channels:
             if str(channel.type) == 'text':
              text_channel_list.append(channel)
-
+        #print("Running 1")
         try:
          embed.set_thumbnail(url=guild_new.icon.url)
         except:
           pass
+
         ucc =  guild_new.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
-        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {ucc} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Boosters -`** {subs}\n**`Roles -`** {Rolecount}\n**`Text channels -`** {tcc}\n**`Categories-`** {cc}\n**`NSFW level -`** {NSFW_level} ".format(
+        embed.description = "**`Guild name -`** {name} \n **`Guild description -`** \n{desc} \n **`Member count -`** {mem_count} \n**`Bots -`** {bot_count} \n **`Created at -`** {ucc_} \n**`Owner id -`** {owner} \n**`Boost level -`** {boosters} \n**`Security level -`** {sec_level} \n**`Roles -`** {Rolecount}\n**`Text channels -`** {tcc}\n**`Categories-`** {cc}\n**`NSFW level -`** {NSFW_level} ".format(
           name = guild_new , desc = guild_desciption , mem_count = member_count , created_at = guild_made_at
-           ,owner = owner , boosters = boost_tier , sec_level = security_level , subs = subscribers , 
-           bot_count = bot_count , Rolecount = len(guild_new.roles) , NSFW_level = guild_new.nsfw_level , cc = len(categories_count) , tcc = len(text_channel_list)
+           ,owner = owner , boosters = boost_tier , sec_level = security_level ,
+           bot_count = bot_count , Rolecount = len(guild_new.roles) , NSFW_level = guild_new.nsfw_level , cc = len(categories_count) , tcc = len(text_channel_list) , ucc_ = ucc
           )
         #embed.description = "name - {name}".format(name = guild_new.name)
         embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}|| Hope you have a great time using the bot :))  ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
@@ -484,7 +490,7 @@ async def nitrousers(ctx:SlashContext):
          embed.description = nitro_users_new               
          embed.color = discord.Color.from_rgb( 117, 255, 255 )     
          if(nitro_users == []):
-           await ctx.respond("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , View = SupportServerView())        
+           await ctx.respond("```We found no users with nitro in this guild ,if you Feel this is an error please type info: report bug to report this issue !```" , view = SupportServerView())        
          else: 
           #await message.reply("`Here is a list of nitro users in your server with thier discord id's - `\n\n" + str(nitro_users_new))         
           await ctx.respond(embed=embed)
