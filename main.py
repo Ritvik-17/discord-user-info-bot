@@ -345,8 +345,8 @@ async def help(ctx:SlashContext):
         embed = discord.Embed()           
         embed.title= "Information help"
         embed.description = "**• Type `/info 'id'` to get the information of the user \n• Type `/example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
-        embed.add_field(name="__Main commands__" , value="`help` , `example`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite`,`about bot` " , inline= False)
-        embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
+        embed.add_field(name="__Main commands__" , value="`help` , `example` ,`how to get id` , `support`,`this` ,`thisg` ,`invite`,`about bot` " , inline= False)
+        embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `idhelp` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**We use slash commands as bot's syntax.**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
@@ -830,7 +830,7 @@ async def on_message(message):
         embed = discord.Embed()   
         embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator} | Hope you have a great time using the bot :)  ".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator))                          
         embed.title= "Information help"
-        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `/example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
+        embed.description = "**• Type `info: userid` to get the information of the user. \n• Type `/example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/)**."
         embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support` ,`this` , `thisg` ,`invite` " , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
         embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
