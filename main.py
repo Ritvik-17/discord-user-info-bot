@@ -39,7 +39,7 @@ class HelpCommandView(discord.ui.View):
     def __init__(self):
         super().__init__()    
         url = f"https://discord.com/invite/gzaz9SSkkW"
-        url2 = f"https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"
+        url2 = f"https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png"
         url3 =f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
         self.add_item(discord.ui.Button(label="Support server", url=url))
         self.add_item(discord.ui.Button(label="Example", url=url2))
@@ -59,7 +59,7 @@ class SupportView(discord.ui.View):
     def __init__(self):
         super().__init__()    
         url = f"https://discord.com/invite/gzaz9SSkkW"
-        url2 = f"https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"
+        url2 = f"https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png"
         self.add_item(discord.ui.Button(label="Support server", url=url))
         self.add_item(discord.ui.Button(label="Example", url=url2))  
 
@@ -188,7 +188,7 @@ async def aboutbot(ctx:SlashContext):
         embed.description = "This bot's core purpose is to get user information from an id , maybe you can do this with other bots but they are very limited ,User information bot is better and dedicated for this purpose with maximum information about a user or server !"
         embed.add_field(name="__Total Users__" , value= str(len(client.users)) +" users !" , inline= True)
         embed.add_field(name="__Total Servers__" , value="Used in " + str(len(client.guilds)) + " servers!" , inline= True)
-        embed.add_field(name="__Version__" , value="v2.8" , inline= True)        
+        embed.add_field(name="__Version__" , value="v2.9" , inline= True)        
         discorduser = await client.fetch_user(888985968554688512)   
         embed.set_thumbnail(url= discorduser.avatar.url)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
@@ -344,10 +344,10 @@ async def help(ctx:SlashContext):
         LogIdentifier(ctx , "help")
         embed = discord.Embed()           
         embed.title= "Information help"
-        embed.description = "**• Type `info: userid` to get the information of the user \n• Type `info: example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
-        embed.add_field(name="__Main commands__" , value="`help` , `example` , `info: id`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite`,`about bot` " , inline= False)
+        embed.description = "**• Type `/info 'id'` to get the information of the user \n• Type `/example ` to view a image of how to use me. \n• I was developed by [RitTheDev#0519](https://ritthedev.itch.io/) **"
+        embed.add_field(name="__Main commands__" , value="`help` , `example`  , `info: guildid` ,`how to get id`,`autoinfo` , `support`,`this` ,`thisg` ,`invite`,`about bot` " , inline= False)
         embed.add_field(name="__Other commands__" , value="`ping` , `vote` , `info: id help` , `nitro users`, `site list` , `privacy policy` , `report bug` , `who made you` , `updates`" , inline= False)
-        embed.add_field(name="__Syntax__" , value="**`info:` is my syntax**" , inline=False)
+        embed.add_field(name="__Syntax__" , value="**We use slash commands as bot's syntax.**" , inline=False)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await ctx.respond(embed=embed , view = HelpCommandView())  
@@ -361,7 +361,7 @@ async def ping(ctx:SlashContext):
 async def example(ctx:SlashContext):
         LogIdentifier(ctx , "example")
         embed = discord.Embed()
-        embed.set_image(url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")
         embed.color = discord.Color.purple()
         await ctx.respond(embed=embed) 
 
@@ -370,8 +370,8 @@ async def id_help(ctx:SlashContext):
           LogIdentifier(ctx , "id")
           embed = discord.Embed()
           embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator} | Hope you have a great time using the bot :)  ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))
-          embed.add_field(name="__User id__" ,value="type `info: how to get id` to get someones discord id and type `info: (paste the id here)` to get a users information" , inline= False) 
-          embed.add_field(name="__Server id__" ,value="using similar process after turning on developer mode right click on the server icon and click copy id and type `info: (paste the id here)` to get a servers information note:- due to discord API policies we can retrive information from the servers if the bot is in that server" , inline= False) 
+          embed.add_field(name="__User id__" ,value="type `/howtogetid` to get someones discord id and type `/info (paste the id here)` to get a users information" , inline= False) 
+          embed.add_field(name="__Server id__" ,value="using similar process after turning on developer mode right click on the server icon and click copy id and type `/info (paste the id here)` to get a servers information note:- due to discord API policies we can retrive information from the servers if the bot is in that server" , inline= False) 
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
           await ctx.respond(embed = embed ,view = IdHelpView())
 
@@ -456,7 +456,7 @@ async def whomadeyou(ctx:SlashContext):
 @client.slash_command(name="updates" , description="View the recent update the bot has recieved")
 async def updates(ctx:SlashContext): 
    LogIdentifier(ctx , "updates") 
-   await ctx.respond("```md\nUser information bot v2.8 (Update)\n\n#New\n-  Added addtional information like Bug hunter , Early supporter , and Early verified bot developer\n\n#Changes \n- Make some minor UI changes \n-  Changed True/false system to Yes/No \n\n#bug fixes \n-  Fixed date system in few places.```", view = SupportServerView())
+   await ctx.respond("```md\nUser information bot v2.9 (Update)\n\n#New\n-  Migrated completly to slash commands !\n\n#Changes \n- None \n\n#bug fixes \n-  Fixed many minor bugs.```", view = SupportServerView())
 
 
 
@@ -531,7 +531,7 @@ async def on_guild_join(guild):
          embed.color = discord.Color.from_rgb( 117, 255, 255 )             
          await channel.send(embed=embed, components = 
          [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW") , 
-         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"), Button(style=ButtonStyle.URL, label="Invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands")
+         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png"), Button(style=ButtonStyle.URL, label="Invite", url="https://discord.com/api/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands")
          ]])
         #await channel.send("Hi i'm User information bot ,Thanks for adding  me !! \n\nType `info: help` for a list for a list of commands and type `info: example` to view an example of how to use me.\n\nenjoy using the bot :)")
         #link = await channel.create_invite(max_age = 0 , max_uses =  0)      
@@ -556,6 +556,7 @@ async def on_message(message):
 
  if message.author == client.user:
         return
+
  try:  
   if(str(message.guild.id) in no_autoresponse_guilds):
     print("Didnt run automated information as owner prefered not to")
@@ -564,11 +565,25 @@ async def on_message(message):
    if(len(message.content) == 18 and int(message.content)):
      try:
           print("Used automated information !! author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))          
-          await message.reply(embed = await Userinformation(message.content , message))
+          #await message.reply(embed = await Userinformation(message.content , message))
+          await message.reply("**RIP automated information :( **\n\n Find more about this by clicking the 'View Notice button'" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png") ,Button(style=ButtonStyle.URL , label ="View Notice" , url="http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html") ]])
+          return
      except Exception as Err:
       print(Err)
  except Exception as Err:
   pass
+
+ if(message.content.startswith("info:")):    
+  
+   embed = discord.Embed()    
+   embed.title =  "We have switched to slash commands !" 
+   embed.description = "All commands have been migrated to slash commands due to discord's new [Privileged Message Content Intent policy](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-for-Verified-Bots).  Type `/help` to know how to use these commands and to use the main command type `/info 'the users id'`. \n\n Find more about this (why,what,and when) on our website over **[here](http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html)**.\n\n Still need help? no worries we got you join our support server over **[here](https://discord.gg/eQX2XxA9Ve)**."        
+   #embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator}".format(clientname = message.author.name , clientdiscriminator = message.author.discriminator))
+   embed.color = discord.Color.green()
+   await message.reply(embed=embed , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png") ,Button(style=ButtonStyle.URL , label ="View Notice" , url="http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html") ]]) 
+   return
+ 
+
  try:  
   if(message.content.startswith("info:")):         
     print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
@@ -609,7 +624,7 @@ async def on_message(message):
     except Exception as error_new:
       #print(str(error_new))
       if( str(error_new) != "403 Forbidden (error code: 50001): Missing Access" or str(error_new)[0:10] == "invalid literal for int() with base 10: ' help'"):
-       #await message.reply("```⚠ a_n error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+       #await message.reply("```⚠ a_n error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠ ```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")]])
        pass
 
     if(message.content == "info: this"):
@@ -693,7 +708,7 @@ async def on_message(message):
           
           await message.reply(embed = embed)
         except Exception as err:
-          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs Error Code - {err} ⚠ ```".format(err = err), components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+          await message.reply("```⚠ An error has occured make sure you entered the bots command right and the id correctly or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs Error Code - {err} ⚠ ```".format(err = err), components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")]])
           pass
      
       if(used_main_command == True and used_guild_command == True):
@@ -764,7 +779,7 @@ async def on_message(message):
 
     if (message.content.startswith("info: example")):
         embed = discord.Embed()
-        embed.set_image(url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png")
+        embed.set_image(url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")
         embed.color = discord.Color.purple()
         await message.reply(embed = embed)
 
@@ -774,13 +789,13 @@ async def on_message(message):
            [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
            ])
     if (message.content.startswith("info: updates")):     
-        await message.reply("```md\nUser information bot v2.8 (Update)\n\n#New\n-  Added addtional information like Bug hunter , Early supporter , and Early verified bot developer\n\n#Changes \n- Make some minor UI changes \n-  Changed True/false system to Yes/No \n\n#bug fixes \n-  Fixed date system in few places.```" , components = [
+        await message.reply("```md\nUser information bot v2.9 (Update)\n\n#New\n-  Added addtional information like Bug hunter , Early supporter , and Early verified bot developer\n\n#Changes \n- Make some minor UI changes \n-  Changed True/false system to Yes/No \n\n#bug fixes \n-  Fixed date system in few places.```" , components = [
            [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
            ]) 
     
     if (message.content.startswith("info: support")):
           await message.reply("if there are any issues with the bot \n \n`possible fixes -` \n➤ make sure you entered the command's syntax right. \n➤ try info: help or info: example. \n➤ make sure you gave the bot permissions to embed,message and etc. \n➤ join the support server and in the #support ask for help or report this and we will help you within 24hrs of time. \n➤ if nothing works contact us at ritthedevcontact@gmail.com ." , components = [
-           [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW") ,  Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png")]
+           [Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW") ,  Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")]
            ])       
     if (message.content.startswith("info: nitro users")):                
          guild_id = message.guild.id
@@ -823,7 +838,7 @@ async def on_message(message):
         embed.color = discord.Color.from_rgb( 117, 255, 255 )
         await message.reply(embed = embed, components = 
         [[Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW") , 
-         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/890895848773419038/896350154406363156/unknown.png"),
+         Button(style=ButtonStyle.URL, label="Example", url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png"),
          Button(style=ButtonStyle.URL, label="Vote for us", url="https://top.gg/bot/888985968554688512/vote")
          ]])     
     if(message.content.startswith("info: server count")):
@@ -839,7 +854,7 @@ async def on_message(message):
         embed.description = "This bot's core purpose is to get user information from an id , maybe you can do this with other bots but they are very limited ,User information bot is better and dedicated for this purpose with maximum information about a user or server !"
         embed.add_field(name="__Total Users__" , value= str(len(client.users)) +" users !" , inline= True)
         embed.add_field(name="__Total Servers__" , value="Used in " + str(len(client.guilds)) + " servers!" , inline= True)
-        embed.add_field(name="__Version__" , value="v2.8" , inline= True)        
+        embed.add_field(name="__Version__" , value="v2.9" , inline= True)        
         discorduser = await client.fetch_user(888985968554688512)   
         embed.set_thumbnail(url= discorduser.avatar.url)
         #embed.add_field(name="__Note__" , value= "🛠this is currently the beta version of the bot soon all the features will be released join the support server to be updated.🛠" , inline= False)
@@ -936,7 +951,7 @@ async def on_message(message):
    try:
      print(int(con_mes[5:None]))
    except Exception as err:
-    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/890895848773419038/890895864053235722/unknown.png")]])
+    await message.reply("```⚠ An error has occured make sure you entered the bots command right or try info: support or info: example , if nothing works try joining our support server and we will help you within 24hrs ⚠```" , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")]])
     print(err)
     pass
 
