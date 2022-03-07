@@ -574,7 +574,7 @@ async def on_message(message):
   pass
 
  if(message.content.startswith("info:")):    
-  
+   print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
    embed = discord.Embed()    
    embed.title =  "We have switched to slash commands !" 
    embed.description = "All commands have been migrated to slash commands due to discord's new [Privileged Message Content Intent policy](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-for-Verified-Bots).  Type `/help` to know how to use these commands and to use the main command type `/info 'the users id'`. \n\n Find more about this (why,what,and when) on our website over **[here](http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html)**.\n\n Still need help? no worries we got you join our support server over **[here](https://discord.gg/eQX2XxA9Ve)**."        
