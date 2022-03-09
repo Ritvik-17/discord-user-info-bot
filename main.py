@@ -94,7 +94,7 @@ class SiteListView(discord.ui.View):
         url2 = f"https://discordbotlist.com/bots/discord-user-info-bot"
         url3= f"https://infinitybotlist.com/bots/888985968554688512/"
         url4= f"https://discordextremelist.xyz/en-US/bots/888985968554688512"
-        url5= f"https://discord-user-info-client.glitch.me/"
+        url5= f"https://discord-user-info-bot.glitch.me/"
         self.add_item(discord.ui.Button(label="Top.gg", url=url))
         self.add_item(discord.ui.Button(label="Discord bot list", url=url2))  
         self.add_item(discord.ui.Button(label="Infinity bot list", url=url3))  
@@ -268,7 +268,7 @@ async def Userinformation(id , ctx):
            else: mobile = "Not using mobile currently"
            if(server_member.premium_since == None): boosting_since = "Not boosting this server"
            else: boosting_since = server_member.premium_since
-           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p") , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
+           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`Top role`** - {top_role}".format(date = server_member.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p") , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
           #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
           #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
@@ -404,6 +404,7 @@ async def information(
     #gender: Option(str, "Choose your gender", choices=["Male", "Female", "Other"]),
     #age: Option(int, "Enter your age", min_value=1, max_value=99, default=18)
 ):
+
    LogIdentifier(ctx , "info command {id}".format(id=id))
    used_guild_command = True
    try:
@@ -510,7 +511,6 @@ async def nitrousers(ctx:SlashContext):
           await ctx.respond(embed=embed)
 
 '''
-
     
 
 #Events
@@ -519,6 +519,8 @@ async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
     await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="/help | on {users} users !".format(users = len(client.users))))
     #for guild_id in client.guilds:  guild_ids.append(guild_id.id)    
+    
+
 
 @client.event
 async def on_guild_join(guild): 
@@ -556,7 +558,6 @@ async def on_message(message):
 
  if message.author == client.user:
         return
-
  try:  
   if(str(message.guild.id) in no_autoresponse_guilds):
     print("Didnt run automated information as owner prefered not to")
@@ -573,8 +574,9 @@ async def on_message(message):
  except Exception as Err:
   pass
 
- if(message.content.startswith("info:")):    
-   print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
+ if(message.content.startswith("info:")):   
+  print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
+  try: 
    embed = discord.Embed()    
    embed.title =  "We have switched to slash commands !" 
    embed.description = "All commands have been migrated to slash commands due to discord's new [Privileged Message Content Intent policy](https://support-dev.discord.com/hc/en-us/articles/4404772028055-Message-Content-Privileged-Intent-for-Verified-Bots).  Type `/help` to know how to use these commands and to use the main command type `/info 'the users id'`. \n\n Find more about this (why,what,and when) on our website over **[here](http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html)**.\n\n Still need help? no worries we got you join our support server over **[here](https://discord.gg/eQX2XxA9Ve)**."        
@@ -582,8 +584,9 @@ async def on_message(message):
    embed.color = discord.Color.green()
    await message.reply(embed=embed , components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW") , Button(style= ButtonStyle.URL  , label= "View example" , url= "https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png") ,Button(style=ButtonStyle.URL , label ="View Notice" , url="http://alecs-survival.glitch.me/creators/faq/slashcommandsnotice.html") ]]) 
    return
- 
-
+  except:
+    await message.reply('Whoops..... , An error has occured this might happen mostly likely due to me not having `Embed links permission` try turning this permission on if that doesnt work dont hesitate to reach us out at our support server ! \n\n `Error code - MES_EMBD_PERM_100`' ,components = [[Button(style=ButtonStyle.URL , label ="Support server" , url="https://discord.com/invite/gzaz9SSkkW")]] )
+    return
  try:  
   if(message.content.startswith("info:")):         
     print("command_used author: {author} content: {message_} authorid: {authorid} guildid: {guildid} channelid: {channelid} guild name: {guildname}".format(author = message.author.name , message_ = message.content,authorid = message.author.id , guildid =message.guild.id,channelid = message.channel.id , guildname = message.guild.name))
@@ -592,7 +595,6 @@ async def on_message(message):
     con_mes = message.content 
     if message.author == client.user:
         return    
-    
     
     try:
        try:
@@ -701,7 +703,7 @@ async def on_message(message):
            else: mobile = "Not using mobile currently"
            if(server_member.premium_since == None): boosting_since = "Not boosting this server"
            else: boosting_since = server_member.premium_since
-           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Activity`** - {activity} \n**`Status`** - {status} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`On mobile`** - {mobile} \n**`Top role`** - {top_role}".format(date = server_member.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p") , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
+           embed.add_field(name="__In Guild Information__" ,value="**`Join date`** - {date} \n**`Nick name`** - {nick} \n**`Boosting server`** - {boosting_since} \n**`Top role`** - {top_role}".format(date = server_member.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p") , activity = server_member.activity ,status = server_member.desktop_status , nick = server_member.nick , mobile = mobile   , boosting_since = boosting_since , top_role = server_member.top_role) , inline= False)
           #embed.add_field(name="__Tips__" ,value="pro tip - type `info: how to get id` or `info: id help` to know how to get a users or server id")
           #embed.add_field(name="__Note__" ,value="🛠 this is currently the beta version of the bot soon all the features will be released. 🛠")
           embed.color = discord.Color.from_rgb( 117, 255, 255 )
