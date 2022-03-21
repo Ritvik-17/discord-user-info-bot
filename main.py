@@ -517,8 +517,14 @@ async def nitrousers(ctx:SlashContext):
 async def on_ready():
     print('On ready: We have logged in as {0.user}'.format(client))    
     await client.change_presence(status=discord.Status.online , activity = discord.Activity(type=discord.ActivityType.watching, name="/help | on {users} users !".format(users = len(client.users))))
-    #for guild_id in client.guilds:  guild_ids.append(guild_id.id)    
-    
+    '''
+    #searching for guild
+    for guild_id in range(300,330):  
+      member_count = 0
+      for member in client.guilds[guild_id].members:
+                member_count = member_count + 1
+      print(member_count,  client.guilds[guild_id].id)    
+    '''
 
 
 @client.event
