@@ -456,7 +456,7 @@ async def whomadeyou(ctx:SlashContext):
 @client.slash_command(name="updates" , description="View the recent update the bot has recieved")
 async def updates(ctx:SlashContext): 
    LogIdentifier(ctx , "updates") 
-   await ctx.respond("```md\nUser information bot v2.9 (Update)\n\n#New\n-  Migrated completly to slash commands !\n\n#Changes \n- None \n\n#bug fixes \n-  Fixed many minor bugs.```", view = SupportServerView())
+   await ctx.respond("```md\nUser information bot v2.9 (Update)\n\n#New\n-  None !\n\n#Changes \n- None \n\n#bug fixes \n-  Resolved invite issues \n-  Fixed minor bugs.```", view = SupportServerView())
 
 
 
