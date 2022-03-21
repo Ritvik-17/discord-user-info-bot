@@ -3,7 +3,6 @@ from pydoc import cli
 from urllib.request import urlopen
 import discord 
 from discord.ext.commands.core import check, command
-from discord_slash import SlashCommand , SlashContext, context
 from discord_components import DiscordComponents,ButtonStyle,Button,InteractionEventType, component 
 from discord_components.dpy_overrides import fetch_message, send
 from discord.ext import commands
@@ -40,7 +39,7 @@ class HelpCommandView(discord.ui.View):
         super().__init__()    
         url = f"https://discord.com/invite/gzaz9SSkkW"
         url2 = f"https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png"
-        url3 =f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
+        url3 =f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=414464867393&scope=bot%20applications.commands"
         self.add_item(discord.ui.Button(label="Support server", url=url))
         self.add_item(discord.ui.Button(label="Example", url=url2))
         self.add_item(discord.ui.Button(label="Invite", url=url3))
@@ -114,7 +113,7 @@ class ReportBugView(discord.ui.View):
 class InviteView(discord.ui.View):
     def __init__(self):
         super().__init__()    
-        url=f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands"
+        url=f"https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=414464867393&scope=bot%20applications.commands"
         self.add_item(discord.ui.Button(label="Invite", url=url))  
 
 #groups
@@ -788,7 +787,7 @@ async def on_message(message):
     if (message.content.startswith("info: invite")):
         await message.reply( " ` click the invite button to add me into your server !!! ` " , 
            components = [
-           [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=518822285025&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
+           [Button(style=ButtonStyle.URL, label="invite", url="https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=414464867393&scope=bot%20applications.commands") , Button(style=ButtonStyle.URL, label="Support server", url="https://discord.com/invite/gzaz9SSkkW")]
            ])
     if (message.content.startswith("info: updates")):     
         await message.reply("```md\nUser information bot v2.9 (Update)\n\n#New\n-  Added addtional information like Bug hunter , Early supporter , and Early verified bot developer\n\n#Changes \n- Make some minor UI changes \n-  Changed True/false system to Yes/No \n\n#bug fixes \n-  Fixed date system in few places.```" , components = [
