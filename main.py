@@ -219,7 +219,7 @@ def BooltoString(Bool):
 def ColorMatcher(Number):
   return ColorDictonary[Number]
 
-async def Userinformation(id , ctx):
+async def Userinformation(id , ctx , Mention):
        try:
          
           discorduser = await client.fetch_user(id)          
@@ -240,11 +240,7 @@ async def Userinformation(id , ctx):
             nitro = False 
           
           mobile =""
-          boosting_since = ""
-         
-         
-         
-
+          boosting_since = ""                          
 
           for mem_id in ctx.guild.members:
                if(mem_id.id == discorduser.id):
@@ -261,7 +257,10 @@ async def Userinformation(id , ctx):
            embed.set_thumbnail(url=discorduser.avatar.url)
           except:
             embed.set_thumbnail(url=discorduser.default_avatar)
-          embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator} | Hope you have a great time using the bot :)  ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))          
+          if(Mention):
+               embed.set_footer(text= "Pro tip: Enter the id of a user instead of mentioning the user, to get information of a user outside your server. Type /howtogetid to know about finding a users discord id. ")          
+          else:
+               embed.set_footer(text= "Requested by {clientname}#{clientdiscriminator} | Hope you have a great time using the bot :)  ".format(clientname = ctx.author.name , clientdiscriminator = ctx.author.discriminator))          
           if(member_in_guild == True):                     
            if(server_member.is_on_mobile()): mobile = "yes" 
            else: mobile = "Not using mobile currently"
@@ -425,7 +424,13 @@ async def information(
           return
    
    if(used_guild_command == False):
-     await ctx.respond(embed = await Userinformation(id_new,ctx)) 
+     Mention = False
+     try:
+      if id.index("@") == 1:   
+       Mention = True  
+     except:
+      Mention = False
+     await ctx.respond(embed = await Userinformation(id_new,ctx , Mention)) 
    try:
     if(used_guild_command == True):
      await ctx.respond(embed = await GuildInformation(id , ctx))
