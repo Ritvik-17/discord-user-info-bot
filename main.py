@@ -1,5 +1,6 @@
 from logging import exception
 from pydoc import cli
+from unicodedata import name
 from urllib.request import urlopen
 import discord 
 from discord.ext.commands.core import check, command
@@ -14,11 +15,12 @@ from discord.commands import SlashCommandGroup
 
 
 #Variables
-intents = discord.Intents().default()
+intents = discord.Intents.default()
 intents.members = True
 client = discord.Bot(intents=intents)
 #debug_guilds=[888989551027163146,834089778215125002] 
 token  = "ODg4OTg1OTY4NTU0Njg4NTEy.YUaqsw.G1Aw7oHBSzm0WCNVlGBR4poC8Ts"
+banned_users = [684981239081467965]
 #slash = SlashCommand(client , sync_commands= True)
 
 
@@ -353,14 +355,18 @@ async def help(ctx:SlashContext):
 @client.slash_command(name="ping" , description="Know the bot's latency !")
 async def ping(ctx:SlashContext):
         LogIdentifier(ctx , "ping")
-        await ctx.respond(f'latency ping is {round (client.latency * 1000)} ms')        
+        await ctx.respond(f'latency ping is {round (client.latency * 1000)} ms')
+
+@client.slash_command(name="test" , description="Testing command." , guild_ids=[888989551027163146])
+async def ping(ctx:SlashContext):
+      await ctx.respond('ok.')
 
 @client.slash_command(name="example" , description="View an example image to know how to use the bot.")
 async def example(ctx:SlashContext):
         LogIdentifier(ctx , "example")
         embed = discord.Embed()
         embed.set_image(url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")
-        embed.color = discord.Color.purple()
+        embed.color = discord.Color.purple()   
         await ctx.respond(embed=embed) 
 
 @client.slash_command(name="idhelp" , description="Know about using the bot for a user and server")
@@ -402,7 +408,9 @@ async def information(
     #gender: Option(str, "Choose your gender", choices=["Male", "Female", "Other"]),
     #age: Option(int, "Enter your age", min_value=1, max_value=99, default=18)
 ):
-
+   for user in banned_users:
+     if(user == ctx.author.id):
+       return
    LogIdentifier(ctx , "info command {id}".format(id=id))
    used_guild_command = True
    try:
@@ -534,7 +542,11 @@ async def on_ready():
 
 @client.event
 async def on_guild_join(guild): 
-    print("joined server {guildid} named {guildname}".format(guildid = guild.id , guildname = guild.name )) 
+
+    channel = client.get_channel(964752884770164766)
+    await channel.send("**🟩 Joined server** \n\nName - {name} \nId - {id} \nOwner - {owner} \nCurrent servers - {servers}.".format(name= guild.name, id =guild.id, owner= guild.owner_id , servers =str(len(client.guilds))))
+
+    print("joined server {guildid} named {guildname}".format(guildid = guild.id , guildname = guild.name ))     
     for channel in guild.channels:        
         try:   
          embed = discord.Embed()   
@@ -555,6 +567,9 @@ async def on_guild_join(guild):
 @client.event       
 async def on_guild_remove(guild):
        #print("left {guildid} named {guildname}".format(guildid =guild.id , guildname =  guild.name))
+       channel = client.get_channel(964752884770164766)
+       await channel.send("**🟥 Left server** \n\nName - {name} \nId - {id} \nOwner - {owner} \nMembers - {members} \nCurrent servers - {servers}.".format(name= guild.name, id =guild.id, owner= guild.owner_id , members = client.get_guild(guild.id), servers = str(len(client.guilds))))
+
        for channel in guild.channels:        
         try:                        
             #link = await channel.create_invite(max_age = 0 , max_uses =  0)
