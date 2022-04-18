@@ -568,7 +568,7 @@ async def on_guild_join(guild):
 async def on_guild_remove(guild):
        #print("left {guildid} named {guildname}".format(guildid =guild.id , guildname =  guild.name))
        channel = client.get_channel(964752884770164766)
-       await channel.send("**🟥 Left server** \n\nName - {name} \nId - {id} \nOwner - {owner} \nMembers - {members} \nCurrent servers - {servers}.".format(name= guild.name, id =guild.id, owner= guild.owner_id , members = client.get_guild(guild.id), servers = str(len(client.guilds))))
+       await channel.send("**🟥 Left server** \n\nName - {name} \nId - {id} \nOwner - {owner} \nCurrent servers - {servers}.".format(name= guild.name, id =guild.id, owner= guild.owner_id , servers = str(len(client.guilds))))
 
        for channel in guild.channels:        
         try:                        
