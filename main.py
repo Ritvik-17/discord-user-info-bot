@@ -396,7 +396,7 @@ async def support(ctx:SlashContext):
 @client.slash_command(name="this" , description="Know information about yourself")
 async def this(ctx:SlashContext):
         LogIdentifier(ctx , "this")
-        await ctx.respond(embed = await Userinformation(ctx.author.id , ctx)) 
+        await ctx.respond(embed = await Userinformation(ctx.author.id , ctx , False)) 
 
 @client.slash_command(name="thisg" , description="Know information about the guild you used the commmand in")
 async def thisg(ctx:SlashContext):
