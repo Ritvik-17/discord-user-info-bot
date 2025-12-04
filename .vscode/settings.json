@@ -1,3 +1,21 @@
 {
+    "restoreTerminals.terminals": [
+        {
+          "splitTerminals": [
+            {
+              "name": "server",
+              "commands": ["npm i", "npm run dev"]
+            },
+            {
+              "name": "client",
+              "commands": ["npm run dev:client"]
+            },
+            {
+              "name": "test",
+              "commands": ["jest --watch"]
+            }
+          ]
+        },
+    ],
     "python.formatting.provider": "black"
 }
