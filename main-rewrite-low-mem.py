@@ -1,6 +1,8 @@
 # main.py — optimized for low RAM (Discloud-friendly) with /about group
 
 import os
+import asyncio
+from aiohttp import web
 from dotenv import load_dotenv
 import discord
 from discord.ui import View, Button
@@ -340,6 +342,30 @@ async def on_ready():
 # -------------------------------
 #   RUN BOT
 # -------------------------------
+async def handle_health(request):
+    return web.Response(text="OK")
+
+async def start_web_server():
+    port = int(os.environ.get("PORT", 10000))  # Render provides $PORT
+    app = web.Application()
+    app.router.add_get("/", handle_health)
+    app.router.add_get("/healthz", handle_health)
+    runner = web.AppRunner(app)
+    await runner.setup()
+    site = web.TCPSite(runner, "0.0.0.0", port)
+    await site.start()
+    print(f"HTTP server started on 0.0.0.0:{port}")
+async def main():
+    # start the HTTP server first (so Render can see it quickly)
+    await start_web_server()
+
+    # then start the bot (this call is non-blocking here because we're in the same loop)
+    # NOTE: bot.start is coroutine — unlike bot.run
+    try:
+        await bot.start(TOKEN)
+    finally:
+        await bot.close()
 
 if __name__ == "__main__":
-    bot.run(TOKEN)
+    # run the combined webserver + bot in asyncio
+    asyncio.run(main())
