@@ -1,25 +1,66 @@
+# main.py — optimized for low RAM (Discloud-friendly) with /about group
+
 import os
 from dotenv import load_dotenv
 import discord
 from discord.ui import View, Button
+from discord.commands import SlashCommandGroup
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 if not TOKEN:
     raise SystemExit("Missing DISCORD_TOKEN in environment")
 
-intents = discord.Intents.default()
-intents.members = True  # needed for server-member info
+# -------------------------------
+#   INTENTS + LOW RAM SETTINGS
+# -------------------------------
 
-# Use discord.Bot (py-cord / modern discord lib)
-bot = discord.Bot(intents=intents)
+intents = discord.Intents.none()  # absolutely minimum RAM
+intents.guilds = True             # required for slash commands
+intents.members = False           # no member cache
+intents.presences = False         # no presence events
+intents.messages = False          # no message events
 
-# --- Config / small globals ---
-banned_users = []   # placeholder (your original code referenced banned_users). :contentReference[oaicite:6]{index=6}
+bot = discord.Bot(
+    intents=intents,
+    member_cache_flags=discord.MemberCacheFlags.none(),
+    chunk_guilds_at_startup=False,   # <<<< MOST IMPORTANT
+)
+
+# Disable message cache entirely
+bot._connection.max_messages = 0
+# -------------------------------
+#   CONSTANTS / GLOBALS
+# -------------------------------
+banned_users = []  # your original placeholder
 NO_AUTORESPONSE_GUILDS = set()
-COLOR_DICTIONARY = {"0": "Blue","1": "Grey","2": "Green","3": "Yellow","4": "Red","5": "Pink"}
+COLOR_DICTIONARY = {
+    "0": "Blue", "1": "Grey", "2": "Green",
+    "3": "Yellow", "4": "Red", "5": "Pink"
+}
 
-# --- Reusable Views (buttons) converted from original code's Views. --- :contentReference[oaicite:7]{index=7}
+# -------------------------------
+#   SMALL HELPERS
+# -------------------------------
+
+def LogIdentifier(ctx, tag: str):
+    """Lightweight logging helper so commands can annotate actions without heavy state."""
+    try:
+        guild_part = f"guild={ctx.guild.id}" if getattr(ctx, "guild", None) else "DM"
+        print(f"[{tag}] author={ctx.author} ({ctx.author.id}) {guild_part}")
+    except Exception:
+        print(f"[{tag}] (log failed)")
+
+def bool_to_yesno(b):
+    return "Yes" if b else "No"
+
+def color_matcher(x):
+    return COLOR_DICTIONARY.get(x, "Unknown")
+
+# -------------------------------
+#   BUTTON VIEWS
+# -------------------------------
+
 class SupportView(View):
     def __init__(self):
         super().__init__(timeout=None)
@@ -31,26 +72,31 @@ class InviteView(View):
         super().__init__(timeout=None)
         self.add_item(Button(label="Invite", url="https://discord.com/oauth2/authorize?client_id=888985968554688512&permissions=414464867393&scope=bot%20applications.commands"))
 
-# --- Utility helpers (kept behavior similar to original) ---
-def bool_to_yesno(b: bool) -> str:
-    return "Yes" if b else "No"
+class AboutView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=None)
+        url = "https://discord.com/invite/gzaz9SSkkW"
+        url2 = "https://ritthedev.itch.io/"
+        self.add_item(discord.ui.Button(label="Support server", url=url))
+        self.add_item(discord.ui.Button(label="Developer portfolio", url=url2))
 
-def color_matcher(avatar_str_segment: str) -> str:
-    return COLOR_DICTIONARY.get(avatar_str_segment, "Unknown")
+# -------------------------------
+#   USER EMBED (low RAM version)
+# -------------------------------
 
 async def build_user_embed(user: discord.User, guild: discord.Guild | None, mention_mode: bool):
-    """Return a discord.Embed with user info (replicates original fields)."""
+    # nitro detection
     nitro = False
     try:
         if user.avatar and user.avatar.is_animated():
             nitro = True
-    except Exception:
+    except:
         nitro = False
 
     created_str = user.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
     avatar_url = user.avatar.url if user.avatar else user.default_avatar.url
 
-    # Hypesquad flags (best-effort replicate)
+    # Hypesquad logic
     hypesquads = ["brilliance", "bravery", "balance", "none"]
     list_num = 3
     try:
@@ -58,17 +104,22 @@ async def build_user_embed(user: discord.User, guild: discord.Guild | None, ment
         if getattr(pf, "hypesquad_brilliance", False): list_num = 0
         if getattr(pf, "hypesquad_bravery", False): list_num = 1
         if getattr(pf, "hypesquad_balance", False): list_num = 2
-    except Exception:
+    except:
         pass
 
-    # Is user a member of current guild?
-    member_in_guild = False
+    # Fetch single member only when needed
     server_member = None
     if guild:
-        server_member = guild.get_member(user.id)
-        member_in_guild = server_member is not None
+        try:
+            server_member = await guild.fetch_member(user.id)
+        except:
+            server_member = None
 
-    embed = discord.Embed(title="User Information", color=discord.Color.from_rgb(117,255,255))
+    embed = discord.Embed(
+        title="User Information",
+        color=discord.Color.from_rgb(117, 255, 255)
+    )
+
     embed.description = (
         f"**`User name`** - {user.name}#{user.discriminator}\n"
         f"**`User id`** - {user.id}\n"
@@ -83,17 +134,17 @@ async def build_user_embed(user: discord.User, guild: discord.Guild | None, ment
         f"**`Avatar url`** - [Click here]({avatar_url})"
     )
 
-    # If in guild, add join/roles/boost info
     if server_member:
         joined = server_member.joined_at.strftime("%A, %B %d %Y @ %H:%M:%S %p") if server_member.joined_at else "Unknown"
         top_role = server_member.top_role.name if server_member.top_role else "None"
-        boosting_since = server_member.premium_since or "Not boosting this server"
+        boosting = server_member.premium_since or "Not boosting this server"
+
         embed.add_field(
             name="In Guild Information",
             value=(
                 f"**`Join date`** - {joined}\n"
                 f"**`Nick name`** - {server_member.nick or 'None'}\n"
-                f"**`Boosting server`** - {boosting_since}\n"
+                f"**`Boosting server`** - {boosting}\n"
                 f"**`Top role`** - {top_role}"
             ),
             inline=False
@@ -101,20 +152,27 @@ async def build_user_embed(user: discord.User, guild: discord.Guild | None, ment
 
     return embed
 
+# -------------------------------
+#   GUILD EMBED (low RAM version)
+# -------------------------------
+
 async def build_guild_embed(guild: discord.Guild):
-    """Return a discord.Embed with guild info (replicates original)."""
     guild_desc = guild.description or "No description"
     created_str = guild.created_at.strftime("%A, %B %d %Y @ %H:%M:%S %p")
-    mfa_map = ["low","medium","high","highest"]
-    sec_level = mfa_map[guild.mfa_level] if guild.mfa_level < len(mfa_map) else "unknown"
+    sec_map = ["low", "medium", "high", "highest"]
+    sec = sec_map[guild.mfa_level] if guild.mfa_level < len(sec_map) else "unknown"
 
-    # count text channels and categories & bots
+    member_count = guild.member_count or "Unknown"
+    bot_count = "Unknown"   # to avoid iterating all members
+
     text_channels = [c for c in guild.channels if isinstance(c, discord.TextChannel)]
-    categories = [c for c in guild.categories]
-    member_count = guild.member_count or sum(1 for _ in guild.members)
-    bot_count = sum(1 for m in guild.members if m.bot)
+    categories = guild.categories
 
-    embed = discord.Embed(title="Guild Information", color=discord.Color.from_rgb(117,255,255))
+    embed = discord.Embed(
+        title="Guild Information",
+        color=discord.Color.from_rgb(117,255,255)
+    )
+
     embed.description = (
         f"**`Guild name -`** {guild.name}\n"
         f"**`Guild description -`**\n{guild_desc}\n"
@@ -123,15 +181,69 @@ async def build_guild_embed(guild: discord.Guild):
         f"**`Created at -`** {created_str}\n"
         f"**`Owner id -`** {guild.owner_id}\n"
         f"**`Boost level -`** {guild.premium_tier}\n"
-        f"**`Security level -`** {sec_level}\n"
+        f"**`Security level -`** {sec}\n"
         f"**`Roles -`** {len(guild.roles)}\n"
         f"**`Text channels -`** {len(text_channels)}\n"
         f"**`Categories -`** {len(categories)}\n"
         f"**`NSFW level -`** {getattr(guild, 'nsfw_level', 'unknown')}"
     )
+
     return embed
 
-# --- Slash commands (help/ping/this/info/site/etc) ---
+# -------------------------------
+#   ABOUT GROUP
+# -------------------------------
+
+about = SlashCommandGroup("about", "about bot command")
+
+@bot.slash_command(name="about", description="Know about the developers and the bot!")
+async def about_cmd(ctx: discord.ApplicationContext):
+
+    LogIdentifier(ctx, "about")
+
+    embed = discord.Embed(
+        title="About Bot",
+        description=(
+            "This bot's purpose is to fetch the **maximum information** about a user or server using their ID.\n"
+            "Unlike other bots, this one is **specialized** for info lookup."
+        ),
+        color=discord.Color.from_rgb(117, 255, 255)
+    )
+
+    embed.add_field(
+        name="__Total Users__",
+        value="Unknown (low-RAM mode)",
+        inline=True
+    )
+    embed.add_field(
+        name="__Total Servers__",
+        value=f"{len(bot.guilds)} servers!",
+        inline=True
+    )
+    embed.add_field(
+        name="__Version__",
+        value="v2.9",
+        inline=True
+    )
+
+    # Bot avatar
+    try:
+        me = await bot.fetch_user(bot.user.id)
+        embed.set_thumbnail(url=me.avatar.url)
+    except:
+        pass
+
+    embed.set_footer(
+        text="A project by RitTheDev#0519",
+        icon_url="https://cdn.discordapp.com/avatars/764736831643975693/29372d85837ce1b747e98297a3e00b93.png?size=1024"
+    )
+
+    await ctx.respond(embed=embed, view=AboutView())
+
+# -------------------------------
+#   SLASH COMMANDS (other)
+# -------------------------------
+
 @bot.slash_command(name="help", description="Get a list of all commands and how to use the bot")
 async def help_cmd(ctx: discord.ApplicationContext):
     embed = discord.Embed(
@@ -139,8 +251,8 @@ async def help_cmd(ctx: discord.ApplicationContext):
         color=discord.Color.from_rgb(117,255,255)
     )
     embed.add_field(name="User information", value="`/info`", inline=False)
-    embed.add_field(name="Guild information", value="`/info` (guild id)`", inline=False)
-    embed.add_field(name="General commands", value="`/help`, `/example`, `/about`, `/ping`, `/support`", inline=False)
+    embed.add_field(name="Guild information", value="`/info (guild id)`", inline=False)
+    embed.add_field(name="General commands", value="`/help`, `/example`, `/about bot`, `/ping`, `/support`", inline=False)
     await ctx.respond(embed=embed, view=SupportView())
 
 @bot.slash_command(name="ping", description="Check bot latency")
@@ -149,9 +261,8 @@ async def ping(ctx: discord.ApplicationContext):
 
 @bot.slash_command(name="example", description="View an example image to know how to use the bot")
 async def example(ctx: discord.ApplicationContext):
-    embed = discord.Embed()
+    embed = discord.Embed(color=discord.Color.purple())
     embed.set_image(url="https://cdn.discordapp.com/attachments/912924429057675274/949286662360403978/unknown.png")
-    embed.color = discord.Color.purple()
     await ctx.respond(embed=embed)
 
 @bot.slash_command(name="support", description="Need help? Support information")
@@ -163,44 +274,47 @@ async def support(ctx: discord.ApplicationContext):
 
 @bot.slash_command(name="this", description="Get information about yourself")
 async def this(ctx: discord.ApplicationContext):
-    embed = await build_user_embed(ctx.author, ctx.guild, mention_mode=False)
+    embed = await build_user_embed(ctx.author, ctx.guild, False)
     await ctx.respond(embed=embed)
 
-@bot.slash_command(
-    name="info",
-    description="Get information about a user or guild",
-)
+@bot.slash_command(name="info", description="Get information about a user or guild")
 async def info(ctx: discord.ApplicationContext, id: str):
-    # simple banned check
     if ctx.author.id in banned_users:
         return await ctx.respond("You are not allowed to use this bot.", ephemeral=True)
 
-    # Try parse mention
+    # mention <@123>
     try:
-        # mention like <@!123> or <@123>
         if id.startswith("<@") and id.endswith(">"):
             uid = int(''.join(ch for ch in id if ch.isdigit()))
             user = await bot.fetch_user(uid)
-            embed = await build_user_embed(user, ctx.guild, mention_mode=True)
+            embed = await build_user_embed(user, ctx.guild, True)
             return await ctx.respond(embed=embed)
-    except Exception:
+    except:
         pass
 
-    # Try as user id
+    # numeric id
     try:
-        maybe_int = int(id)
-        # try user first
+        maybe = int(id)
+
+        # Try user
         try:
-            user = await bot.fetch_user(maybe_int)
-            embed = await build_user_embed(user, ctx.guild, mention_mode=False)
+            user = await bot.fetch_user(maybe)
+            embed = await build_user_embed(user, ctx.guild, False)
             return await ctx.respond(embed=embed)
         except discord.NotFound:
-            # try guild
-            guild = bot.get_guild(maybe_int) or await bot.fetch_guild(maybe_int)
-            if guild:
-                embed = await build_guild_embed(guild)
-                return await ctx.respond(embed=embed)
-            raise
+            pass
+
+        # Try guild (local first)
+        guild = bot.get_guild(maybe)
+        if guild:
+            embed = await build_guild_embed(guild)
+            return await ctx.respond(embed=embed)
+
+        # fetch guild
+        guild = await bot.fetch_guild(maybe)
+        embed = await build_guild_embed(guild)
+        return await ctx.respond(embed=embed)
+
     except ValueError:
         return await ctx.respond("Invalid id. Provide a numeric user or guild id, or a mention.", ephemeral=True)
     except discord.Forbidden:
@@ -208,13 +322,24 @@ async def info(ctx: discord.ApplicationContext, id: str):
     except Exception as e:
         return await ctx.respond(f"Error: {e}", ephemeral=True)
 
-# --- Events ---
+# -------------------------------
+#   EVENTS
+# -------------------------------
+
 @bot.event
 async def on_ready():
     await bot.sync_commands()
     print(f"Logged in as {bot.user} (id: {bot.user.id})")
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f"/help | on {len(bot.users)} users!"))
+    await bot.change_presence(
+        activity=discord.Activity(
+            type=discord.ActivityType.watching,
+            name=f"/help | on {len(bot.guilds)} servers!"
+        )
+    )
 
-# Run
+# -------------------------------
+#   RUN BOT
+# -------------------------------
+
 if __name__ == "__main__":
     bot.run(TOKEN)

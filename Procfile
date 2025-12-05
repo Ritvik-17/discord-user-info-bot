@@ -1,1 +1,1 @@
-worker: python main.py
+web: python main-rewrite-low-mem.py
