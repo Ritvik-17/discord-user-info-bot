@@ -33,11 +33,6 @@ With simple slash commands and a clean output format, it made user lookups effor
 
 ---
 
-## 🚫 Project Status
-
-This project is **no longer maintained**, and the bot is **not active**.  
-All features remain frozen in their last known state.
-
 ---
 
 ## 🧩 Community Support Server
