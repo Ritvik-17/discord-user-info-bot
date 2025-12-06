@@ -1,6 +1,5 @@
 # User Information Bot  
 ![Discord](https://img.shields.io/badge/Platform-Discord-5865F2?logo=discord&logoColor=white)  
-![License](https://img.shields.io/badge/License-Open%20Use-green)
 
 A lightweight Discord bot that displays detailed information about any user using their Discord ID.  
 ---
